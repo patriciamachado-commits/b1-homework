@@ -5,18 +5,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>B1 Session 6: Open-Air Markets</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#5B5091;min-height:100vh;padding:20px}.container{max-width:800px;margin:0 auto}.header{background:#fff;border-radius:20px;padding:30px;margin-bottom:20px;text-align:center}.header h1{color:#5B5091;font-size:1.4em}.header p{color:#888}.badge{background:#F5A623;color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em}.card{background:#fff;border-radius:16px;padding:25px;margin-bottom:20px}.card h2{color:#5B5091;margin-bottom:15px}label{font-weight:600;color:#333;display:block;margin-bottom:8px}input[type="text"]{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px}.btn{background:#5B5091;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;width:100%;margin-top:10px}.btn:hover{background:#4a4080}.btn-orange{background:#F5A623}.section{display:none}.section.active{display:block}.reading-box{background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #5B5091;line-height:1.7}.question{background:#f8f9fa;border-radius:12px;padding:20px;margin:15px 0;border:1px solid #eee}.question h4{margin-bottom:15px;color:#333}.option{padding:14px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:12px}.option:hover{border-color:#5B5091;background:#f8f6ff}.option.selected{border-color:#5B5091;background:#f0edff}.option.correct{border-color:#22c55e;background:#f0fdf4}.option.incorrect{border-color:#ef4444;background:#fef2f2}.circle{width:20px;height:20px;border:2px solid #ccc;border-radius:50%;flex-shrink:0}.option.selected .circle{border-color:#5B5091;background:#5B5091}textarea{width:100%;min-height:120px;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-family:inherit}textarea:focus{outline:none;border-color:#5B5091}.progress{height:8px;background:#e0e0e0;border-radius:4px;margin-bottom:20px}.progress-bar{height:100%;background:#F5A623;border-radius:4px}.score-card{background:linear-gradient(135deg,#5B5091,#7B6DB5);border-radius:20px;padding:35px;color:#fff;text-align:center}.score-big{font-size:4em;font-weight:700}.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}.scores>div{background:rgba(255,255,255,.15);border-radius:12px;padding:12px}.scores label{font-size:.75em;opacity:.9}.scores span{font-size:1.4em;font-weight:700;display:block}.fill-input{width:120px;border:none;border-bottom:2px solid #5B5091;text-align:center;font-size:16px;padding:5px;background:transparent}.fill-input:focus{outline:none}.record-btn{width:80px;height:80px;border-radius:50%;background:#fff;border:3px solid #5B5091;cursor:pointer;margin:20px auto;display:flex;align-items:center;justify-content:center}.record-btn.recording{border-color:#ef4444;animation:pulse 1.5s infinite}.record-dot{width:24px;height:24px;background:#5B5091;border-radius:50%}.record-btn.recording .record-dot{background:#ef4444;border-radius:4px;width:20px;height:20px}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}.timer{text-align:center;font-size:28px;font-weight:700;color:#5B5091}.status{text-align:center;color:#666;margin-top:10px}audio{width:100%;margin-top:15px}.hidden{display:none}.feedback{background:#f8f6ff;border:1px solid #5B5091;border-radius:12px;padding:20px;margin-top:15px}@media(max-width:600px){.scores{grid-template-columns:repeat(3,1fr)}}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#5B5091;min-height:100vh;padding:20px}.container{max-width:800px;margin:0 auto}.header{background:#fff;border-radius:20px;padding:30px;margin-bottom:20px;text-align:center}.header h1{color:#5B5091;font-size:1.4em}.header p{color:#888}.badge{background:#F5A623;color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em}.card{background:#fff;border-radius:16px;padding:25px;margin-bottom:20px}.card h2{color:#5B5091;margin-bottom:15px}label{font-weight:600;color:#333;display:block;margin-bottom:8px}input[type="text"]{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px}.btn{background:#5B5091;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;width:100%;margin-top:10px}.btn:hover{background:#4a4080}.btn-orange{background:#F5A623}.section{display:none}.section.active{display:block}.reading-box{background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #5B5091;line-height:1.7}.question{background:#f8f9fa;border-radius:12px;padding:20px;margin:15px 0;border:1px solid #eee}.question h4{margin-bottom:15px;color:#333}.option{padding:14px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:12px}.option:hover{border-color:#5B5091;background:#f8f6ff}.option.selected{border-color:#5B5091;background:#f0edff}.option.correct{border-color:#22c55e;background:#f0fdf4}.option.incorrect{border-color:#ef4444;background:#fef2f2}.circle{width:20px;height:20px;border:2px solid #ccc;border-radius:50%;flex-shrink:0}.option.selected .circle{border-color:#5B5091;background:#5B5091}textarea{width:100%;min-height:120px;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-family:inherit}textarea:focus{outline:none;border-color:#5B5091}.progress{height:8px;background:#e0e0e0;border-radius:4px;margin-bottom:20px}.progress-bar{height:100%;background:#F5A623;border-radius:4px}.score-card{background:linear-gradient(135deg,#5B5091,#7B6DB5);border-radius:20px;padding:35px;color:#fff;text-align:center}.score-big{font-size:4em;font-weight:700}.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}.scores>div{background:rgba(255,255,255,.15);border-radius:12px;padding:12px}.scores label{font-size:.75em;opacity:.9}.scores span{font-size:1.4em;font-weight:700;display:block}.fill-input{width:120px;border:none;border-bottom:2px solid #5B5091;text-align:center;font-size:16px;padding:5px;background:transparent}.fill-input:focus{outline:none}.record-btn{width:80px;height:80px;border-radius:50%;background:#fff;border:3px solid #5B5091;cursor:pointer;margin:20px auto;display:flex;align-items:center;justify-content:center}.record-btn.recording{border-color:#ef4444;animation:pulse 1.5s infinite}.record-dot{width:24px;height:24px;background:#5B5091;border-radius:50%}.record-btn.recording .record-dot{background:#ef4444;border-radius:4px;width:20px;height:20px}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}.timer{text-align:center;font-size:28px;font-weight:700;color:#5B5091}.status{text-align:center;color:#666;margin-top:10px}audio{width:100%;margin-top:15px}.hidden{display:none}.feedback{background:#f8f6ff;border:1px solid #5B5091;border-radius:12px;padding:20px;margin-top:15px}
+
+/* NEW STYLES FOR IMPROVED SUBMISSION */
+.not-submitted-warning{
+  background:#fef2f2;
+  border:3px solid #ef4444;
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+  margin-bottom:20px;
+  animation:warningPulse 2s infinite;
+}
+.not-submitted-warning h3{
+  color:#ef4444;
+  font-size:1.3em;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.not-submitted-warning p{
+  color:#666;
+}
+@keyframes warningPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.3)}
+  50%{box-shadow:0 0 0 10px rgba(239,68,68,0)}
+}
+.btn-submit-big{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#fff;
+  border:none;
+  padding:24px 40px;
+  border-radius:16px;
+  font-size:22px;
+  font-weight:700;
+  cursor:pointer;
+  width:100%;
+  margin-top:15px;
+  box-shadow:0 6px 20px rgba(34,197,94,0.4);
+  animation:submitPulse 2s infinite;
+}
+.btn-submit-big:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(34,197,94,0.5);
+}
+@keyframes submitPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.02)}
+}
+.submitted-success{
+  background:#f0fdf4;
+  border:3px solid #22c55e;
+  border-radius:16px;
+  padding:25px;
+  text-align:center;
+  margin-bottom:20px;
+}
+.submitted-success h3{
+  color:#22c55e;
+  font-size:1.4em;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.submitted-success p{
+  color:#666;
+}
+.name-input-final{
+  background:#f8f9fa;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:20px;
+}
+.name-input-final label{
+  font-size:1.1em;
+  color:#5B5091;
+}
+.name-input-final input{
+  border:2px solid #5B5091;
+}
+
+@media(max-width:600px){.scores{grid-template-columns:repeat(3,1fr)}.btn-submit-big{font-size:18px;padding:20px}}
 </style>
 </head>
 <body>
 <div class="container">
 <div class="header"><h1>Session 6: Open-Air Markets <span class="badge">Quiz</span></h1><p>Week 3 • Bargaining Expressions</p></div>
 
-<div class="section active" id="start">
-<div class="card"><label>Your Full Name</label><input type="text" id="studentName" placeholder="Enter your name..."><button class="btn" onclick="startQuiz()">Start Homework →</button></div>
-</div>
-
-<div class="section" id="s1">
+<!-- REMOVED NAME INPUT - Goes directly to Section 1 -->
+<div class="section active" id="s1">
 <div class="card">
 <div class="progress"><div class="progress-bar" style="width:20%"></div></div>
 <h2>1. Reading Comprehension</h2>
@@ -133,15 +214,26 @@
 <div class="option" onclick="sel(this)" data-v="b"><div class="circle"></div>discuss</div>
 <div class="option" onclick="sel(this)" data-v="c"><div class="circle"></div>discover</div>
 </div>
-<button class="btn btn-orange" onclick="submitFinal()">Submit Homework ✓</button>
+<button class="btn btn-orange" onclick="submitFinal()">Finish Quiz ✓</button>
 </div>
 </div>
 
 <div class="section" id="results">
+<!-- NOT SUBMITTED WARNING - Shows until submitted -->
+<div class="not-submitted-warning" id="notSubmittedWarning">
+<h3>⚠️ NOT SUBMITTED YET!</h3>
+<p>Your homework is complete but NOT sent to your teacher. Enter your name and click the green button below!</p>
+</div>
+
+<!-- SUCCESS MESSAGE - Hidden until submitted -->
+<div class="submitted-success hidden" id="submittedSuccess">
+<h3>✅ SUBMITTED SUCCESSFULLY!</h3>
+<p>Your homework has been sent to your teacher. Great job!</p>
+</div>
+
 <div class="score-card">
 <p style="opacity:.8">Session 6 Complete!</p>
 <div class="score-big" id="finalPct">0%</div>
-<p id="studentDisplay"></p>
 <div class="scores">
 <div><label>Reading</label><span id="scL">0/3</span></div>
 <div><label>Vocab</label><span id="scV">0/6</span></div>
@@ -149,15 +241,29 @@
 <div><label>Speaking</label><span id="scS">0/20</span></div>
 <div><label>Grammar</label><span id="scG">0/8</span></div>
 </div>
-<button class="btn btn-orange" style="margin-top:25px" onclick="submitToTeacher()">Submit to Teacher →</button>
+
+<!-- NAME INPUT AT END -->
+<div class="name-input-final" id="nameInputSection" style="margin-top:25px">
+<label>👤 Enter Your Full Name to Submit:</label>
+<input type="text" id="studentName" placeholder="Your full name..." style="margin-top:10px">
+</div>
+
+<!-- BIG SUBMIT BUTTON -->
+<button class="btn-submit-big" id="submitBtn" onclick="submitToTeacher()">
+📤 SUBMIT TO TEACHER
+</button>
+
 </div>
 <div style="text-align:center;margin-top:20px"><button class="btn" style="background:#fff;color:#5B5091" onclick="location.reload()">Try Again</button></div>
 </div>
 </div>
 
 <script>
-const SESSION='6';let name='',scores={l:0,v:0,w:0,s:0,g:0},writingText='';let oldscores={l:0,v:0,w:0,s:0,g:0};let isRec=false,mediaRec=null,chunks=[],recTime=0,recTimer=null;
-function startQuiz(){name=document.getElementById('studentName').value.trim();if(!name){alert('Please enter your name');return;}showSection('s1');}
+const SESSION='6';
+let name='',scores={l:0,v:0,w:0,s:0,g:0},writingText='';
+let isRec=false,mediaRec=null,chunks=[],recTime=0,recTimer=null;
+let hasSubmitted=false;
+
 function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function sel(el){el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
 function checkS1(){const answers=['b','c','b'];let correct=0;document.querySelectorAll('#s1 .question').forEach((q,i)=>{const selected=q.querySelector('.option.selected');if(selected&&selected.dataset.v===answers[i])correct++;});scores.l=correct;showSection('s2');}
@@ -166,8 +272,28 @@ document.getElementById('writing').addEventListener('input',function(){document.
 function checkWriting(){writingText=document.getElementById('writing').value;const text=writingText.toLowerCase();const phrases=['best price','how about','deal','too expensive','could','lowest','discount','accept'].filter(p=>text.includes(p)).length;scores.w=Math.min(20,phrases*3);document.getElementById('wFeedback').innerHTML='<b>Feedback:</b> Found '+phrases+' bargaining phrases.<br><b>Score: '+scores.w+'/20</b>';document.getElementById('wFeedback').classList.remove('hidden');document.getElementById('wBtn').classList.add('hidden');document.getElementById('wNext').classList.remove('hidden');}
 async function toggleRec(){if(!isRec){try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaRec=new MediaRecorder(stream);chunks=[];mediaRec.ondataavailable=e=>chunks.push(e.data);mediaRec.onstop=()=>{document.getElementById('audio').src=URL.createObjectURL(new Blob(chunks,{type:'audio/webm'}));document.getElementById('audio').classList.remove('hidden');document.getElementById('sBtn').disabled=false;};mediaRec.start();isRec=true;recTime=0;document.getElementById('recBtn').classList.add('recording');document.getElementById('recStatus').textContent='Recording...';recTimer=setInterval(()=>{recTime++;document.getElementById('timer').textContent=Math.floor(recTime/60)+':'+(recTime%60).toString().padStart(2,'0');},1000);}catch(e){alert('Microphone error: '+e.message);}}else{mediaRec.stop();mediaRec.stream.getTracks().forEach(t=>t.stop());clearInterval(recTimer);isRec=false;document.getElementById('recBtn').classList.remove('recording');document.getElementById('recStatus').textContent='Recording saved!';}}
 function checkSpeaking(){scores.s=recTime>=30?20:recTime>=20?15:recTime>=10?10:5;document.getElementById('sFeedback').innerHTML='<b>Duration:</b> '+Math.floor(recTime/60)+':'+(recTime%60).toString().padStart(2,'0')+'<br><b>Score: '+scores.s+'/20</b>';document.getElementById('sFeedback').classList.remove('hidden');showSection('s5');}
-function submitFinal(){let correct=0;document.querySelectorAll('#s5 .question').forEach(q=>{const sel=q.querySelector('.option.selected');const ans=q.dataset.c;if(sel){if(sel.dataset.v===ans){correct++;sel.classList.add('correct');}else{sel.classList.add('incorrect');q.querySelector('[data-v="'+ans+'"]').classList.add('correct');}}});scores.g=correct;const total=scores.l+scores.v+scores.w+scores.s+scores.g;const pct=Math.round(total/57*100);document.getElementById('finalPct').textContent=pct+'%';document.getElementById('studentDisplay').textContent=name;document.getElementById('scL').textContent=scores.l+'/3';document.getElementById('scV').textContent=scores.v+'/6';document.getElementById('scW').textContent=scores.w+'/20';document.getElementById('scS').textContent=scores.s+'/20';document.getElementById('scG').textContent=scores.g+'/8';showSection('results');}
-function submitToTeacher(){const pct=Math.round((scores.l+scores.v+scores.w+scores.s+scores.g)/57*100);const url='https://docs.google.com/forms/d/e/1FAIpQLSf9uEs5MqWLveyoaMBxeWx3pW1b90siwgaom766CpwqnOI7Dg/viewform?usp=pp_url&entry.518151516='+encodeURIComponent(name)+'&entry.864654596='+encodeURIComponent(SESSION)+'&entry.258952242='+encodeURIComponent(scores.l+'/3')+'&entry.859150584='+encodeURIComponent(scores.v+'/6')+'&entry.1121796741='+encodeURIComponent(scores.w+'/20')+'&entry.1435469716='+encodeURIComponent(scores.s+'/20')+'&entry.1998281944='+encodeURIComponent(scores.g+'/8')+'&entry.1207114914='+encodeURIComponent(pct+'%')+'&entry.939912807='+encodeURIComponent(writingText);window.open(url,'_blank');}
+function submitFinal(){let correct=0;document.querySelectorAll('#s5 .question').forEach(q=>{const sel=q.querySelector('.option.selected');const ans=q.dataset.c;if(sel){if(sel.dataset.v===ans){correct++;sel.classList.add('correct');}else{sel.classList.add('incorrect');q.querySelector('[data-v="'+ans+'"]').classList.add('correct');}}});scores.g=correct;const total=scores.l+scores.v+scores.w+scores.s+scores.g;const pct=Math.round(total/57*100);document.getElementById('finalPct').textContent=pct+'%';document.getElementById('scL').textContent=scores.l+'/3';document.getElementById('scV').textContent=scores.v+'/6';document.getElementById('scW').textContent=scores.w+'/20';document.getElementById('scS').textContent=scores.s+'/20';document.getElementById('scG').textContent=scores.g+'/8';showSection('results');}
+
+function submitToTeacher(){
+  name=document.getElementById('studentName').value.trim();
+  if(!name){
+    alert('⚠️ Please enter your name before submitting!');
+    document.getElementById('studentName').focus();
+    return;
+  }
+  
+  const pct=Math.round((scores.l+scores.v+scores.w+scores.s+scores.g)/57*100);
+  const url='https://docs.google.com/forms/d/e/1FAIpQLSf9uEs5MqWLveyoaMBxeWx3pW1b90siwgaom766CpwqnOI7Dg/viewform?usp=pp_url&entry.518151516='+encodeURIComponent(name)+'&entry.864654596='+encodeURIComponent(SESSION)+'&entry.258952242='+encodeURIComponent(scores.l+'/3')+'&entry.859150584='+encodeURIComponent(scores.v+'/6')+'&entry.1121796741='+encodeURIComponent(scores.w+'/20')+'&entry.1435469716='+encodeURIComponent(scores.s+'/20')+'&entry.1998281944='+encodeURIComponent(scores.g+'/8')+'&entry.1207114914='+encodeURIComponent(pct+'%')+'&entry.939912807='+encodeURIComponent(writingText);
+  
+  window.open(url,'_blank');
+  
+  // Show success, hide warning
+  hasSubmitted=true;
+  document.getElementById('notSubmittedWarning').classList.add('hidden');
+  document.getElementById('submittedSuccess').classList.remove('hidden');
+  document.getElementById('submitBtn').style.display='none';
+  document.getElementById('nameInputSection').style.display='none';
+}
 </script>
 </body>
 </html>
