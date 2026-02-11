@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1 Homework - Session 10: Transportation Issues</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#5B5091;min-height:100vh;padding:20px}
+.container{max-width:800px;margin:0 auto}
+.header{background:#fff;border-radius:20px;padding:30px;margin-bottom:20px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.header h1{color:#5B5091;font-size:1.4em}
+.header p{color:#888}
+.student-info{background:#fff;border-radius:16px;padding:25px;margin-bottom:20px}
+.student-info label{font-weight:600;color:#333;display:block;margin-bottom:8px}
+.student-info input,.student-info select{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px}
+.student-info input:focus,.student-info select:focus{outline:none;border-color:#5B5091}
+.progress-bar{background:#fff;border-radius:16px;padding:15px 20px;margin-bottom:20px}
+.progress-track{height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:#F5A623;transition:width .5s}
+.progress-text{display:flex;justify-content:space-between;margin-top:8px;font-size:14px;color:#666}
+.section{background:#fff;border-radius:20px;padding:30px;margin-bottom:20px;display:none}
+.section.active{display:block}
+.section-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:20px;border-bottom:1px solid #eee}
+.section-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:2px solid #5B5091}
+.section-icon svg{width:24px;height:24px;stroke:#5B5091;stroke-width:2;fill:none}
+.section-title h2{color:#333;font-size:1.2em}
+.section-title p{color:#888;font-size:.9em}
+.btn{background:#5B5091;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn:hover{background:#4a4080}
+.btn:disabled{opacity:.5}
+.btn-secondary{background:#f5f5f5;color:#333}
+.btn-secondary:hover{background:#eee}
+.btn-submit{background:#F5A623}
+.question-card{background:#f8f9fa;border-radius:12px;padding:20px;margin:15px 0;border:1px solid #eee}
+.question-card h4{margin-bottom:15px;color:#333}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{padding:14px 16px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#5B5091;background:#f8f6ff}
+.option.selected{border-color:#5B5091;background:#f0edff}
+.option.correct{border-color:#22c55e;background:#f0fdf4}
+.option.incorrect{border-color:#ef4444;background:#fef2f2}
+.option span{width:20px;height:20px;border:2px solid #ccc;border-radius:50%}
+.option.selected span{border-color:#5B5091;background:#5B5091}
+.writing-area{width:100%;min-height:150px;padding:16px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;resize:vertical;font-family:inherit}
+.writing-area:focus{outline:none;border-color:#5B5091}
+.word-count{text-align:right;color:#888;font-size:14px;margin-top:8px}
+.feedback-box{background:#f8f6ff;border:1px solid #5B5091;border-radius:12px;padding:20px;margin-top:15px;display:none}
+.feedback-box.visible{display:block}
+.feedback-box h4{color:#5B5091;margin-bottom:10px}
+.record-btn{width:80px;height:80px;border-radius:50%;background:#fff;border:3px solid #5B5091;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:20px auto}
+.record-btn:hover{background:#f8f6ff}
+.record-btn.recording{border-color:#ef4444;background:#fef2f2;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}
+.record-icon{width:24px;height:24px;background:#5B5091;border-radius:50%}
+.record-btn.recording .record-icon{border-radius:4px;width:20px;height:20px;background:#ef4444}
+.recording-status{text-align:center;margin-top:15px;color:#666}
+.audio-playback{margin-top:20px;display:none}
+.audio-playback.visible{display:block}
+.score-card{background:linear-gradient(135deg,#5B5091,#7B6DB5);border-radius:20px;padding:35px;color:#fff;text-align:center}
+.final-score{font-size:4em;font-weight:700}
+.score-breakdown{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:25px}
+.score-item{background:rgba(255,255,255,.15);border-radius:12px;padding:12px 8px}
+.score-item-label{font-size:.75em;opacity:.9}
+.score-item-value{font-size:1.4em;font-weight:700}
+.drag-container{display:flex;flex-wrap:wrap;gap:10px;padding:15px;background:#f5f5f5;border-radius:12px;margin-bottom:15px}
+.drag-item{background:#fff;padding:12px 18px;border-radius:8px;cursor:pointer;border:2px solid #e0e0e0}
+.drag-item:hover{border-color:#5B5091}
+.drag-item.selected{border-color:#5B5091;background:#f0edff}
+.drop-target{min-width:120px;min-height:48px;border:2px dashed #ccc;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center;color:#999;cursor:pointer}
+.drop-target.filled{border-style:solid;border-color:#5B5091;background:#f8f6ff;color:#333}
+.match-row{display:grid;grid-template-columns:1fr auto 1fr;gap:15px;align-items:center;margin-bottom:12px}
+.match-definition{background:#f8f9fa;padding:14px;border-radius:8px;border:1px solid #eee}
+.loading{display:none;align-items:center;justify-content:center;gap:10px;padding:20px}
+.loading.visible{display:flex}
+.spinner{width:24px;height:24px;border:3px solid #e0e0e0;border-top-color:#5B5091;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.nav-buttons{display:flex;justify-content:space-between;margin-top:25px}
+.prompt-box{background:#f8f6ff;border:1px solid #d4d0e8;border-radius:12px;padding:20px;margin-bottom:20px}
+.prompt-box h4{color:#5B5091;margin-bottom:10px}
+.tips-list{margin-top:12px;padding-left:20px}
+.tips-list li{color:#666;margin-bottom:6px}
+.submit-section{margin-top:30px;padding-top:25px;border-top:1px solid rgba(255,255,255,.2);text-align:center}
+.transcript-box{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:15px;margin-top:15px;display:none;font-style:italic;color:#2e7d32}
+.transcript-box.visible{display:block}
+.not-submitted{background:#ffebee;border:2px solid #ef5350;border-radius:12px;padding:20px;text-align:center;animation:pulse-warning 2s infinite}
+.not-submitted h3{color:#c62828;margin-bottom:10px}
+@keyframes pulse-warning{0%,100%{box-shadow:0 0 0 0 rgba(239,83,80,.4)}50%{box-shadow:0 0 0 10px rgba(239,83,80,0)}}
+.submitted-success{background:#e8f5e9;border:2px solid #66bb6a;border-radius:12px;padding:20px;text-align:center;display:none}
+.submitted-success h3{color:#2e7d32}
+@media(max-width:600px){.match-row{grid-template-columns:1fr}.score-breakdown{grid-template-columns:repeat(3,1fr)}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header"><h1>🚗 Session 10: Transportation Issues</h1><p>Week 5 • Problems & Solutions</p></div>
+    <div class="student-info" id="studentInfoSection"><label>Your Full Name</label><input type="text" id="studentName" placeholder="Enter your name..."><label>Your Class</label><select id="studentClass"><option value="">Select your class...</option><option value="3072-MW-11AM">3072 - Mon/Wed 11:00 AM</option><option value="3074-MW-8PM">3074 - Mon/Wed 8:00 PM</option><option value="3080-TTH-11AM">3080 - Tue/Thu 11:00 AM</option><option value="3082-TTH-8PM">3082 - Tue/Thu 8:00 PM</option><option value="3085-TTH-945PM">3085 - Tue/Thu 9:45 PM</option></select><button class="btn" style="width:100%" onclick="startHomework()">Start Homework →</button></div>
+    <div class="progress-bar" id="progressBar" style="display:none"><div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0"></div></div><div class="progress-text"><span id="progressLabel">Section 1 of 5</span><span id="progressPercent">0%</span></div></div>
+    
+    <div class="section" id="section1">
+        <div class="section-header"><div class="section-icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div><div class="section-title"><h2>1. Listening</h2><p>Tom's bad morning commute</p></div></div>
+        <div class="prompt-box"><h4>🎧 Listen to the story</h4><p>Tom had a job interview but many things went wrong on his way.</p></div>
+        <div style="margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="playAudioBtn" onclick="playListening()">▶ Play Audio</button><button class="btn btn-secondary" onclick="stopListening()">◼ Stop</button><button class="btn btn-secondary" onclick="document.getElementById('transcript').style.display='block'">Show Transcript</button></div>
+        <div id="transcript" style="display:none;background:#f5f5f5;padding:15px;border-radius:8px;margin-bottom:20px;font-size:14px"><p>Tom had a job interview at 10 AM. He left home early, but many things went wrong.</p><p>First, his bicycle had a flat tire, so he decided to drive. On the highway, there was a big traffic jam. Tom waited for 20 minutes in his car.</p><p>When he finally arrived at the train station, he missed his train. The next train was delayed for 30 minutes.</p><p>He tried to take the subway, but the Blue Line was closed for maintenance. Tom called a taxi, but the taxi broke down on the way.</p><p>Tom arrived 40 minutes late, but he got the job!</p></div>
+        <div class="question-card"><h4>1. Why couldn't Tom use his bicycle?</h4><div class="options" data-c="a"><div class="option" onclick="sel(this)" data-v="a"><span></span>It had a flat tire</div><div class="option" onclick="sel(this)" data-v="b"><span></span>It was stolen</div><div class="option" onclick="sel(this)" data-v="c"><span></span>It was raining</div></div></div>
+        <div class="question-card"><h4>2. What happened on the highway?</h4><div class="options" data-c="b"><div class="option" onclick="sel(this)" data-v="a"><span></span>Tom got lost</div><div class="option" onclick="sel(this)" data-v="b"><span></span>There was a traffic jam</div><div class="option" onclick="sel(this)" data-v="c"><span></span>Tom's car broke down</div></div></div>
+        <div class="question-card"><h4>3. Why couldn't Tom take the subway?</h4><div class="options" data-c="c"><div class="option" onclick="sel(this)" data-v="a"><span></span>It was too expensive</div><div class="option" onclick="sel(this)" data-v="b"><span></span>He missed it</div><div class="option" onclick="sel(this)" data-v="c"><span></span>The Blue Line was closed for maintenance</div></div></div>
+        <div class="nav-buttons"><button class="btn btn-secondary" onclick="goBack0()">← Back</button><button class="btn" onclick="submitS1()">Continue →</button></div>
+    </div>
+
+    <div class="section" id="section2">
+        <div class="section-header"><div class="section-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="section-title"><h2>2. Vocabulary</h2><p>Match transportation problems</p></div></div>
+        <p style="margin-bottom:15px;color:#666">Click a phrase, then click where it belongs:</p>
+        <div class="drag-container" id="wordBank"><div class="drag-item" onclick="pickWord(this)" data-w="delayed">delayed</div><div class="drag-item" onclick="pickWord(this)" data-w="flat tire">flat tire</div><div class="drag-item" onclick="pickWord(this)" data-w="traffic jam">traffic jam</div><div class="drag-item" onclick="pickWord(this)" data-w="broke down">broke down</div><div class="drag-item" onclick="pickWord(this)" data-w="closed for maintenance">closed for maintenance</div><div class="drag-item" onclick="pickWord(this)" data-w="rush hour">rush hour</div></div>
+        <div><div class="match-row"><div class="match-definition">The train arrived late</div><div>→</div><div class="drop-target" data-a="delayed" onclick="dropWord(this)"></div></div><div class="match-row"><div class="match-definition">My bicycle wheel has no air</div><div>→</div><div class="drop-target" data-a="flat tire" onclick="dropWord(this)"></div></div><div class="match-row"><div class="match-definition">Many cars stopped on the highway</div><div>→</div><div class="drop-target" data-a="traffic jam" onclick="dropWord(this)"></div></div><div class="match-row"><div class="match-definition">The car stopped working</div><div>→</div><div class="drop-target" data-a="broke down" onclick="dropWord(this)"></div></div><div class="match-row"><div class="match-definition">The subway line is being repaired</div><div>→</div><div class="drop-target" data-a="closed for maintenance" onclick="dropWord(this)"></div></div><div class="match-row"><div class="match-definition">Busy time when people go to/from work</div><div>→</div><div class="drop-target" data-a="rush hour" onclick="dropWord(this)"></div></div></div>
+        <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(1)">← Back</button><button class="btn" onclick="submitS2()">Continue →</button></div>
+    </div>
+
+    <div class="section" id="section3">
+        <div class="section-header"><div class="section-icon"><svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></div><div class="section-title"><h2>3. Writing</h2><p>Describe a transportation issue and solution</p></div></div>
+        <div class="prompt-box"><h4>✍️ Writing Task</h4><p>Write a few sentences about a transportation issue in your city and suggest a solution.</p><ul class="tips-list"><li>Describe the problem (traffic jams, delays, crowded buses, etc.)</li><li>Explain why it happens</li><li>Suggest a solution</li></ul><p style="margin-top:10px"><strong>Example:</strong> Traffic is very heavy during rush hour in our city. Too many cars use the main roads. The city should build more bus stops and add bike lanes.</p></div>
+        <textarea class="writing-area" id="writingResponse" placeholder="In my city, the biggest transportation problem is..." oninput="updateWC()"></textarea>
+        <div class="word-count">Words: <span id="wordCount">0</span></div>
+        <div class="loading" id="writingLoading"><div class="spinner"></div><span>Checking...</span></div>
+        <div class="feedback-box" id="writingFeedback"></div>
+        <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(2)">← Back</button><button class="btn" id="writingSubmitBtn" onclick="submitWriting()">Get Feedback →</button><button class="btn" id="writingContinueBtn" onclick="goTo(4)" style="display:none">Continue →</button></div>
+    </div>
+
+    <div class="section" id="section4">
+        <div class="section-header"><div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></div><div class="section-title"><h2>4. Speaking</h2><p>Describe a bad commute experience</p></div></div>
+        <div class="prompt-box"><h4>🎤 Speaking Task</h4><p>Record yourself describing:</p><ul class="tips-list"><li>A transportation problem you experienced</li><li>What happened?</li><li>How did you solve it?</li></ul></div>
+        <button class="record-btn" id="recordBtn" onclick="toggleRec()"><div class="record-icon"></div></button>
+        <div class="recording-status"><span id="recordingStatus">Click to start recording</span><div id="recordingTimer" style="font-size:24px;font-weight:bold;margin-top:10px">0:00</div></div>
+        <div class="audio-playback" id="audioPlayback"><audio id="recordedAudio" controls style="width:100%"></audio></div>
+        <div id="transcriptBox" class="transcript-box"></div>
+        <div class="loading" id="speakingLoading"><div class="spinner"></div><span>Processing...</span></div>
+        <div class="feedback-box" id="speakingFeedback"></div>
+        <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(3)">← Back</button><button class="btn" id="submitSpeakingBtn" onclick="submitSpeaking()" disabled>Continue →</button></div>
+    </div>
+
+    <div class="section" id="section5">
+        <div class="section-header"><div class="section-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="section-title"><h2>5. Grammar Quiz</h2><p>Transportation issues vocabulary</p></div></div>
+        <div class="question-card"><h4>1. The bus was _____ by 30 minutes.</h4><div class="options" data-c="b"><div class="option" onclick="sel(this)" data-v="a"><span></span>late</div><div class="option" onclick="sel(this)" data-v="b"><span></span>delayed</div><div class="option" onclick="sel(this)" data-v="c"><span></span>slow</div></div></div>
+        <div class="question-card"><h4>2. My car _____ on the highway yesterday.</h4><div class="options" data-c="a"><div class="option" onclick="sel(this)" data-v="a"><span></span>broke down</div><div class="option" onclick="sel(this)" data-v="b"><span></span>broke up</div><div class="option" onclick="sel(this)" data-v="c"><span></span>broke in</div></div></div>
+        <div class="question-card"><h4>3. There's always a traffic _____ during rush hour.</h4><div class="options" data-c="c"><div class="option" onclick="sel(this)" data-v="a"><span></span>stop</div><div class="option" onclick="sel(this)" data-v="b"><span></span>block</div><div class="option" onclick="sel(this)" data-v="c"><span></span>jam</div></div></div>
+        <div class="question-card"><h4>4. The subway is closed for _____.</h4><div class="options" data-c="b"><div class="option" onclick="sel(this)" data-v="a"><span></span>repair</div><div class="option" onclick="sel(this)" data-v="b"><span></span>maintenance</div><div class="option" onclick="sel(this)" data-v="c"><span></span>fixing</div></div></div>
+        <div class="question-card"><h4>5. I can't ride my bike. It has a _____ tire.</h4><div class="options" data-c="a"><div class="option" onclick="sel(this)" data-v="a"><span></span>flat</div><div class="option" onclick="sel(this)" data-v="b"><span></span>empty</div><div class="option" onclick="sel(this)" data-v="c"><span></span>broken</div></div></div>
+        <div class="question-card"><h4>6. I _____ the train because I woke up late.</h4><div class="options" data-c="b"><div class="option" onclick="sel(this)" data-v="a"><span></span>lost</div><div class="option" onclick="sel(this)" data-v="b"><span></span>missed</div><div class="option" onclick="sel(this)" data-v="c"><span></span>forgot</div></div></div>
+        <div class="question-card"><h4>7. The flight was _____ due to bad weather.</h4><div class="options" data-c="c"><div class="option" onclick="sel(this)" data-v="a"><span></span>stopped</div><div class="option" onclick="sel(this)" data-v="b"><span></span>delayed</div><div class="option" onclick="sel(this)" data-v="c"><span></span>canceled</div></div></div>
+        <div class="question-card"><h4>8. I got _____ on my way to work.</h4><div class="options" data-c="a"><div class="option" onclick="sel(this)" data-v="a"><span></span>lost</div><div class="option" onclick="sel(this)" data-v="b"><span></span>missed</div><div class="option" onclick="sel(this)" data-v="c"><span></span>late</div></div></div>
+        <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(4)">← Back</button><button class="btn btn-submit" onclick="submitFinal()">Submit Homework ✓</button></div>
+    </div>
+
+    <div class="section" id="scoreSection">
+        <div class="score-card"><h2 style="margin-bottom:10px">🎉 Great job, <span id="scoreName"></span>!</h2><div class="final-score" id="finalScore">0%</div><p style="opacity:.9;margin-top:10px">Session 10 Complete</p><div class="score-breakdown"><div class="score-item"><div class="score-item-label">Listening</div><div class="score-item-value" id="listeningScore">0/3</div></div><div class="score-item"><div class="score-item-label">Vocab</div><div class="score-item-value" id="vocabScore">0/6</div></div><div class="score-item"><div class="score-item-label">Writing</div><div class="score-item-value" id="writingScore">0/20</div></div><div class="score-item"><div class="score-item-label">Speaking</div><div class="score-item-value" id="speakingScore">0/20</div></div><div class="score-item"><div class="score-item-label">Grammar</div><div class="score-item-value" id="grammarScore">0/8</div></div></div>
+            <div class="submit-section" id="nameClassSection"><div class="not-submitted" id="notSubmittedWarning"><h3>⚠️ NOT YET SUBMITTED</h3><p>Click the button below to submit your homework</p></div><div class="submitted-success" id="submittedSuccess"><h3>✓ Submitted Successfully!</h3><p>Your teacher will receive your homework</p></div><button class="btn" id="submitBtn" onclick="submitToTeacher()" style="margin-top:20px;padding:24px 48px;font-size:22px;animation:pulse-warning 2s infinite">📤 Submit to Teacher</button></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const SESSION='Session 10';
+let sn='',sc={l:0,v:0,w:0,s:0,g:0},cs=1,selectedWord=null;
+let voices=[],isSpeaking=false;
+let mr,ac,isRec=false,rs=0,ri;
+let speechTranscript='';
+
+const listeningScript=[
+{speaker:'Narrator',text:'Tom had a job interview at 10 AM. He left home early, but many things went wrong.'},
+{speaker:'Narrator',text:'First, his bicycle had a flat tire, so he decided to drive.'},
+{speaker:'Narrator',text:'On the highway, there was a big traffic jam. Tom waited for 20 minutes in his car.'},
+{speaker:'Narrator',text:'When he finally arrived at the train station, he missed his train. The next train was delayed for 30 minutes.'},
+{speaker:'Narrator',text:'He tried to take the subway, but the Blue Line was closed for maintenance.'},
+{speaker:'Narrator',text:'Tom called a taxi, but the taxi broke down on the way.'},
+{speaker:'Narrator',text:'Tom arrived 40 minutes late, but he got the job!'}
+];
+
+function loadVoices(){voices=speechSynthesis.getVoices()}
+speechSynthesis.onvoiceschanged=loadVoices;
+loadVoices();
+
+function getBestVoice(){
+    const d=['Google','Microsoft','Samantha','Daniel'];
+    let best=null,bs=0;
+    for(const v of voices){
+        if(!v.lang.startsWith('en'))continue;
+        let s=0;
+        for(const x of d){if(v.name.includes(x))s+=10}
+        if(v.lang==='en-US')s+=5;
+        if(s>bs){bs=s;best=v}
+    }
+    return best||voices[0];
+}
+
+function playListening(){
+    if(isSpeaking)return;
+    isSpeaking=true;
+    document.getElementById('playAudioBtn').textContent='Playing...';
+    document.getElementById('playAudioBtn').disabled=true;
+    let i=0;
+    function next(){
+        if(i>=listeningScript.length||!isSpeaking){
+            isSpeaking=false;
+            document.getElementById('playAudioBtn').textContent='▶ Play Again';
+            document.getElementById('playAudioBtn').disabled=false;
+            return;
+        }
+        const l=listeningScript[i];
+        const u=new SpeechSynthesisUtterance(l.text);
+        u.voice=getBestVoice();
+        u.rate=0.85;
+        u.onend=()=>{i++;setTimeout(next,600)};
+        u.onerror=()=>{i++;setTimeout(next,300)};
+        speechSynthesis.speak(u);
+    }
+    speechSynthesis.cancel();
+    setTimeout(next,100);
+}
+
+function stopListening(){
+    speechSynthesis.cancel();
+    isSpeaking=false;
+    document.getElementById('playAudioBtn').textContent='▶ Play Audio';
+    document.getElementById('playAudioBtn').disabled=false;
+}
+
+function startHomework(){
+    const n=document.getElementById('studentName').value.trim();
+    const c=document.getElementById('studentClass').value;
+    if(!n){alert('Please enter your name');return}
+    if(!c){alert('Please select your class');return}
+    sn=n+' ['+c+']';
+    document.getElementById('studentInfoSection').style.display='none';
+    document.getElementById('progressBar').style.display='block';
+    goTo(1);
+}
+
+function goBack0(){
+    document.getElementById('section1').classList.remove('active');
+    document.getElementById('studentInfoSection').style.display='block';
+    document.getElementById('progressBar').style.display='none';
+}
+
+function goTo(s){
+    cs=s;
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+    document.getElementById('section'+s).classList.add('active');
+    const p=(s/5)*100;
+    document.getElementById('progressFill').style.width=p+'%';
+    document.getElementById('progressLabel').textContent='Section '+s+' of 5';
+    document.getElementById('progressPercent').textContent=Math.round(p)+'%';
+    window.scrollTo(0,0);
+}
+
+function sel(e){
+    const c=e.closest('.options');
+    c.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+    e.classList.add('selected');
+}
+
+function pickWord(el){
+    document.querySelectorAll('.drag-item').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedWord=el;
+}
+
+function dropWord(target){
+    if(!selectedWord)return;
+    target.textContent=selectedWord.dataset.w;
+    target.classList.add('filled');
+    target.dataset.d=selectedWord.dataset.w;
+    selectedWord.style.display='none';
+    selectedWord=null;
+    document.querySelectorAll('.drag-item').forEach(x=>x.classList.remove('selected'));
+}
+
+function updateWC(){
+    document.getElementById('wordCount').textContent=document.getElementById('writingResponse').value.trim().split(/\s+/).filter(x=>x).length;
+}
+
+function submitS1(){
+    let c=0;
+    document.querySelectorAll('#section1 .options').forEach(o=>{
+        const s=o.querySelector('.option.selected');
+        if(s&&s.dataset.v===o.dataset.c)c++;
+    });
+    sc.l=c;
+    goTo(2);
+}
+
+function submitS2(){
+    let c=0;
+    document.querySelectorAll('.drop-target').forEach(t=>{
+        if(t.dataset.d===t.dataset.a)c++;
+    });
+    sc.v=c;
+    goTo(3);
+}
+
+function submitWriting(){
+    const t=document.getElementById('writingResponse').value.toLowerCase();
+    const wc=t.trim().split(/\s+/).filter(x=>x).length;
+    document.getElementById('writingLoading').classList.add('visible');
+    setTimeout(()=>{
+        const probWords=['traffic','jam','delay','late','crowded','slow','problem','issue','broke','flat','maintenance','rush hour','accident'];
+        const foundProb=probWords.filter(w=>t.includes(w)).length;
+        const solWords=['should','could','need','better','more','improve','solution','build','add','fix'];
+        const foundSol=solWords.filter(w=>t.includes(w)).length;
+        const hasBoth=foundProb>0&&foundSol>0;
+        let score=Math.min(8,foundProb*2)+Math.min(6,foundSol*2)+(hasBoth?2:0)+(wc>=50?4:wc>=30?2:0);
+        sc.w=Math.min(20,score);
+        document.getElementById('writingFeedback').innerHTML='<h4>Feedback</h4><p>Problem vocabulary: '+foundProb+'</p><p>Solution vocabulary: '+foundSol+'</p><p>Word count: '+wc+'</p><p><strong>Score: '+sc.w+'/20</strong></p>';
+        document.getElementById('writingLoading').classList.remove('visible');
+        document.getElementById('writingFeedback').classList.add('visible');
+        document.getElementById('writingSubmitBtn').style.display='none';
+        document.getElementById('writingContinueBtn').style.display='inline-block';
+    },1500);
+}
+
+async function toggleRec(){
+    if(!isRec){
+        try{
+            if(!navigator.mediaDevices)return alert('Browser not supported');
+            document.getElementById('recordBtn').style.opacity='0.5';
+            document.getElementById('recordingStatus').textContent='Requesting microphone...';
+            const st=await navigator.mediaDevices.getUserMedia({audio:true});
+            document.getElementById('recordBtn').style.opacity='1';
+            mr=new MediaRecorder(st);
+            ac=[];
+            mr.ondataavailable=e=>ac.push(e.data);
+            mr.onstop=()=>{
+                document.getElementById('recordedAudio').src=URL.createObjectURL(new Blob(ac,{type:'audio/webm'}));
+                document.getElementById('audioPlayback').classList.add('visible');
+                document.getElementById('submitSpeakingBtn').disabled=false;
+            };
+            mr.start();
+            isRec=true;
+            rs=0;
+            document.getElementById('recordBtn').classList.add('recording');
+            document.getElementById('recordingStatus').textContent='Recording... Click to stop';
+            const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+            if(SpeechRecognition){
+                const recognition=new SpeechRecognition();
+                recognition.continuous=true;
+                recognition.interimResults=true;
+                recognition.lang='en-US';
+                recognition.onresult=(e)=>{
+                    let transcript='';
+                    for(let i=0;i<e.results.length;i++){
+                        transcript+=e.results[i][0].transcript;
+                    }
+                    speechTranscript=transcript;
+                    document.getElementById('transcriptBox').textContent='📝 '+transcript;
+                    document.getElementById('transcriptBox').classList.add('visible');
+                };
+                recognition.onerror=(e)=>{console.log('Speech recognition error:',e.error)};
+                recognition.start();
+                window.currentRecognition=recognition;
+            }else{
+                document.getElementById('transcriptBox').textContent='📝 Speech-to-text not supported in this browser. Your recording will still be submitted.';
+                document.getElementById('transcriptBox').classList.add('visible');
+            }
+            ri=setInterval(()=>{
+                rs++;
+                document.getElementById('recordingTimer').textContent=Math.floor(rs/60)+':'+(rs%60).toString().padStart(2,'0');
+            },1000);
+        }catch(e){alert('Microphone error: '+e.message)}
+    }else{
+        mr.stop();
+        mr.stream.getTracks().forEach(t=>t.stop());
+        clearInterval(ri);
+        isRec=false;
+        if(window.currentRecognition)window.currentRecognition.stop();
+        document.getElementById('recordBtn').classList.remove('recording');
+        document.getElementById('recordingStatus').textContent='Recording saved!';
+    }
+}
+
+function submitSpeaking(){
+    document.getElementById('speakingLoading').classList.add('visible');
+    setTimeout(()=>{
+        sc.s=rs>=30?20:rs>=20?15:rs>=10?10:5;
+        document.getElementById('speakingFeedback').innerHTML='<h4>Feedback</h4><p>Duration: '+Math.floor(rs/60)+':'+(rs%60).toString().padStart(2,'0')+'</p><p><strong>Score: '+sc.s+'/20</strong></p>';
+        document.getElementById('speakingLoading').classList.remove('visible');
+        document.getElementById('speakingFeedback').classList.add('visible');
+        goTo(5);
+    },1500);
+}
+
+function submitFinal(){
+    let c=0;
+    document.querySelectorAll('#section5 .options').forEach(o=>{
+        const s=o.querySelector('.option.selected');
+        if(s){
+            if(s.dataset.v===o.dataset.c){c++;s.classList.add('correct')}
+            else{s.classList.add('incorrect');o.querySelector('[data-v="'+o.dataset.c+'"]').classList.add('correct')}
+        }
+    });
+    sc.g=c;
+    const tot=sc.l+sc.v+sc.w+sc.s+sc.g,pct=Math.round((tot/57)*100);
+    document.getElementById('finalScore').textContent=pct+'%';
+    document.getElementById('scoreName').textContent=sn.split('[')[0].trim();
+    document.getElementById('listeningScore').textContent=sc.l+'/3';
+    document.getElementById('vocabScore').textContent=sc.v+'/6';
+    document.getElementById('writingScore').textContent=sc.w+'/20';
+    document.getElementById('speakingScore').textContent=sc.s+'/20';
+    document.getElementById('grammarScore').textContent=sc.g+'/8';
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+    document.getElementById('scoreSection').classList.add('active');
+    document.getElementById('progressBar').style.display='none';
+    window.scrollTo(0,0);
+}
+
+function submitToTeacher(){
+    const pct=Math.round((sc.l+sc.v+sc.w+sc.s+sc.g)/57*100);
+    const writingText=document.getElementById('writingResponse').value||'No response';
+    const transcript=speechTranscript||'[No transcript - Recording duration: '+Math.floor(rs/60)+':'+(rs%60).toString().padStart(2,'0')+']';
+    const url='https://docs.google.com/forms/d/e/1FAIpQLSf9uEs5MqWLveyoaMBxeWx3pW1b90siwgaom766CpwqnOI7Dg/viewform?usp=pp_url&entry.518151516='+encodeURIComponent(sn)+'&entry.864654596='+encodeURIComponent(SESSION)+'&entry.258952242='+encodeURIComponent(sc.l+'/3')+'&entry.859150584='+encodeURIComponent(sc.v+'/6')+'&entry.939912807='+encodeURIComponent(writingText)+'&entry.1121796741='+encodeURIComponent(sc.w+'/20')+'&entry.2086302086='+encodeURIComponent(transcript)+'&entry.1435469716='+encodeURIComponent(sc.s+'/20')+'&entry.1998281944='+encodeURIComponent(sc.g+'/8')+'&entry.1207114914='+encodeURIComponent(pct+'%');
+    document.getElementById('notSubmittedWarning').style.display='none';
+    document.getElementById('submittedSuccess').style.display='block';
+    document.getElementById('submitBtn').style.display='none';
+    window.open(url,'_blank');
+}
+</script>
+</body>
+</html>
