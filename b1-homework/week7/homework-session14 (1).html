@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>B1 Session 14: Travel Phrasal Verbs</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#5B5091;min-height:100vh;padding:20px}
+.container{max-width:800px;margin:0 auto}
+.header{background:#fff;border-radius:20px;padding:30px;margin-bottom:20px;text-align:center}
+.header h1{color:#5B5091;font-size:1.4em}
+.header p{color:#888}
+.badge{background:#F5A623;color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em}
+.card{background:#fff;border-radius:16px;padding:25px;margin-bottom:20px}
+.card h2{color:#5B5091;margin-bottom:15px}
+label{font-weight:600;color:#333;display:block;margin-bottom:8px}
+input[type="text"]{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px}
+.btn{background:#5B5091;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;width:100%;margin-top:10px}
+.btn:hover{background:#4a4080}
+.btn-orange{background:#F5A623}
+.section{display:none}
+.section.active{display:block}
+.reading-box{background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #5B5091;line-height:1.7}
+.question{background:#f8f9fa;border-radius:12px;padding:20px;margin:15px 0;border:1px solid #eee}
+.question h4{margin-bottom:15px;color:#333}
+.option{padding:14px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#5B5091;background:#f8f6ff}
+.option.selected{border-color:#5B5091;background:#f0edff}
+.option.correct{border-color:#22c55e;background:#f0fdf4}
+.option.incorrect{border-color:#ef4444;background:#fef2f2}
+.circle{width:20px;height:20px;border:2px solid #ccc;border-radius:50%;flex-shrink:0}
+.option.selected .circle{border-color:#5B5091;background:#5B5091}
+textarea{width:100%;min-height:120px;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-family:inherit}
+textarea:focus{outline:none;border-color:#5B5091}
+.progress{height:8px;background:#e0e0e0;border-radius:4px;margin-bottom:20px}
+.progress-bar{height:100%;background:#F5A623;border-radius:4px}
+.score-card{background:linear-gradient(135deg,#5B5091,#7B6DB5);border-radius:20px;padding:35px;color:#fff;text-align:center}
+.score-big{font-size:4em;font-weight:700}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.scores>div{background:rgba(255,255,255,.15);border-radius:12px;padding:12px}
+.scores label{font-size:.75em;opacity:.9}
+.scores span{font-size:1.4em;font-weight:700;display:block}
+.fill-input{width:120px;border:none;border-bottom:2px solid #5B5091;text-align:center;font-size:16px;padding:5px;background:transparent}
+.match-container{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.match-col{display:flex;flex-direction:column;gap:10px}
+.match-col-header{font-weight:700;color:#5B5091;text-align:center;padding:8px;font-size:.9em}
+.match-item{padding:14px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;text-align:center;font-size:15px;transition:all .2s;user-select:none}
+.match-item:hover{border-color:#5B5091;background:#f8f6ff}
+.match-item.active{border-color:#5B5091;background:#f0edff;font-weight:600}
+.match-item.matched{border-color:#22c55e;background:#f0fdf4;cursor:default;opacity:.85}
+.match-item.wrong{border-color:#ef4444;background:#fef2f2;animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.record-btn{width:80px;height:80px;border-radius:50%;background:#fff;border:3px solid #5B5091;cursor:pointer;margin:20px auto;display:flex;align-items:center;justify-content:center}
+.record-btn.recording{border-color:#ef4444;animation:pulse 1.5s infinite}
+.record-dot{width:24px;height:24px;background:#5B5091;border-radius:50%}
+.record-btn.recording .record-dot{background:#ef4444;border-radius:4px;width:20px;height:20px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}
+.timer{text-align:center;font-size:28px;font-weight:700;color:#5B5091}
+.status{text-align:center;color:#666;margin-top:10px}
+audio{width:100%;margin-top:15px}
+.hidden{display:none}
+.feedback{background:#f8f6ff;border:1px solid #5B5091;border-radius:12px;padding:20px;margin-top:15px}
+.chat-box{background:#f8f9fa;border-radius:16px;padding:0;margin-bottom:15px;max-height:380px;overflow-y:auto;border:1px solid #e0e0e0}
+.chat-messages{padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:82%;padding:12px 16px;border-radius:16px;font-size:15px;line-height:1.5;word-wrap:break-word}
+.chat-msg.agent{background:#5B5091;color:#fff;align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.student{background:#F5A623;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-msg .sender{font-size:.7em;opacity:.8;margin-bottom:4px;display:block}
+.chat-input-row{display:flex;gap:10px;margin-top:10px}
+.chat-input-row input{flex:1;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px}
+.chat-input-row input:focus{outline:none;border-color:#5B5091}
+.chat-input-row button{padding:14px 24px;background:#5B5091;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chat-input-row button:hover{background:#4a4080}
+.chat-input-row button:disabled{background:#ccc;cursor:not-allowed}
+.chat-counter{text-align:right;color:#888;font-size:.85em;margin-top:6px}
+.typing-indicator{align-self:flex-start;background:#5B5091;color:#fff;padding:10px 18px;border-radius:16px;border-bottom-left-radius:4px;font-size:14px;opacity:.7}
+.typing-indicator span{animation:blink 1.4s infinite both}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+@media(max-width:600px){.scores{grid-template-columns:repeat(3,1fr)}.chat-msg{max-width:88%}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>Session 14: Travel Planning <span class="badge">Homework</span></h1>
+  <p>Week 7 • Future Tense &amp; Travel Expressions</p>
+</div>
+
+<div class="section active" id="start">
+  <div class="card">
+    <label>Your Full Name</label>
+    <input type="text" id="studentName" placeholder="Enter your name...">
+    <button class="btn" onclick="startQuiz()">Start Homework →</button>
+  </div>
+</div>
+
+<div class="section" id="s1">
+  <div class="card">
+    <div class="progress"><div class="progress-bar" style="width:14%"></div></div>
+    <h2>1. Reading Comprehension</h2>
+    <div class="reading-box">
+      <p><strong>Planning a Trip to Athens</strong></p>
+      <p>My sisters and I <strong>are going to</strong> visit Greece next month. I have been so busy at work and I really need to <strong>get away</strong>. We <strong>are going to set off</strong> on our big adventure around 5:00 AM.</p>
+      <p>My husband <strong>is going to drop us off</strong> at the airport. Our flight <strong>will take off</strong> around 8:00 AM. It <strong>will</strong> be a long journey!</p>
+      <p>When we arrive, we <strong>are going to check in</strong> at a beautiful hotel near the Acropolis. After a brief rest, we <strong>will set out</strong> to find a restaurant for dinner and <strong>look around</strong> the city.</p>
+      <p>I think we <strong>will</strong> have an amazing time! It <strong>is going to</strong> be an awesome two weeks!</p>
+    </div>
+    <div id="readingQuestions"></div>
+    <button class="btn" onclick="checkS1()">Continue →</button>
+  </div>
+</div>
+
+<div class="section" id="s2">
+  <div class="card">
+    <div class="progress"><div class="progress-bar" style="width:28%"></div></div>
+    <h2>2. Vocabulary - Match the Phrasal Verbs</h2>
+    <p style="color:#666;margin-bottom:15px">Click a phrasal verb on the left, then click its meaning on the right to match them.</p>
+    <div id="vocabQuestions"></div>
+    <div id="vocabFeedback" class="feedback hidden"></div>
+    <button class="btn" onclick="checkS2()">Continue →</button>
+  </div>
+</div>
+
+<div class="section" id="s3">
+  <div class="card">
+    <div class="progress"><div class="progress-bar" style="width:42%"></div></div>
+    <h2>3. Writing</h2>
+    <p style="color:#666;margin-bottom:15px">You and a friend are planning a dream vacation! Write a short paragraph (6-8 sentences) describing your travel plans. Think about these questions as you write:</p>
+    <ul style="color:#666;margin:0 0 15px 20px;line-height:2">
+      <li>Why do you need this vacation?</li>
+      <li>How are you getting to the airport? What time does your flight leave?</li>
+      <li>What will you do when you arrive at your destination?</li>
+      <li>Where will you stay? What places will you explore?</li>
+    </ul>
+    <textarea id="writing" placeholder="Write your paragraph here..."></textarea>
+    <p style="text-align:right;color:#888;margin-top:5px">Words: <span id="wc">0</span></p>
+    <div id="wFeedback" class="feedback hidden"></div>
+    <button class="btn" id="wBtn" onclick="checkWriting()">Get Feedback →</button>
+    <button class="btn hidden" id="wNext" onclick="showSection('s4')">Continue →</button>
+  </div>
+</div>
+
+<div class="section" id="s4">
+  <div class="card">
+    <div class="progress"><div class="progress-bar" style="width:56%"></div></div>
+    <h2>4. Travel Agent Conversation ✈️</h2>
+    <p style="color:#666;margin-bottom:15px">You are calling a travel agent to help you plan a vacation. Chat with the agent below — answer her questions and ask for help with your trip!</p>
+    <div class="chat-box" id="chatBox">
+      <div class="chat-messages" id="chatMessages"></div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Type your message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}">
+      <button id="chatSendBtn" onclick="sendChat()">Send</button>
+    </div>
+    <div class="chat-counter">Messages: <span id="chatCount">0</span> / 8</div>
+    <div id="chatFeedback" class="feedback hidden"></div>
+    <button class="btn hidden" id="chatNextBtn" onclick="showSection('s5')">Continue →</button>
+  </div>
+</div>
+
+<div class="section" id="s5">
+  <div class="card">
+    <div class="progress"><div class="progress-bar" style="width:70%"></div></div>
+    <h2>5. Speaking</h2>
+    <p style="color:#666;margin-bottom:15px">Now record yourself! Pretend you are calling the travel agent on the phone to book your trip (30-60 seconds).</p>
+    <div class="record-btn" id="recBtn" onclick="toggleRec()"><div class="record-dot"></div></div>
+    <div class="timer" id="timer">0:00</div>
+    <div class="status" id="recStatus">Click to start recording</div>
+    <audio id="audio" controls class="hidden"></audio>
+    <div id="sFeedback" class="feedback hidden"></div>
+    <button class="btn" id="sBtn" onclick="checkSpeaking()" disabled>Continue →</button>
+  </div>
+</div>
+
+<div class="section" id="s6">
+  <div class="card">
+    <div class="progress"><div class="progress-bar" style="width:85%"></div></div>
+    <h2>6. Grammar Quiz</h2>
+    <div id="grammarQuestions"></div>
+    <button class="btn btn-orange" onclick="submitFinal()">Submit Homework ✓</button>
+  </div>
+</div>
+
+<div class="section" id="results">
+  <div class="score-card">
+    <p style="opacity:.8">Session 14 Complete!</p>
+    <div class="score-big" id="finalPct">0%</div>
+    <p id="studentDisplay"></p>
+    <div class="scores">
+      <div><label>Reading</label><span id="scL">0/3</span></div>
+      <div><label>Vocab</label><span id="scV">0/6</span></div>
+      <div><label>Writing</label><span id="scW">0/20</span></div>
+      <div><label>Chat</label><span id="scC">0/20</span></div>
+      <div><label>Speaking</label><span id="scS">0/20</span></div>
+      <div><label>Grammar</label><span id="scG">0/8</span></div>
+    </div>
+    <button class="btn btn-orange" style="margin-top:25px" onclick="submitToTeacher()">Submit to Teacher →</button>
+  </div>
+  <div style="text-align:center;margin-top:20px">
+    <button class="btn" style="background:#fff;color:#5B5091" onclick="location.reload()">Try Again</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const SESSION='14';
+let name='',scores={l:0,v:0,w:0,c:0,s:0,g:0},writingText='',chatLog='';
+let isRec=false,mediaRec=null,chunks=[],recTime=0,recTimer=null;
+let readingAnswers=[],grammarAnswers=[],vocabItems=[];
+
+const readingQBank=[
+  {q:"Why is the narrator going to visit Greece?",opts:["She got a new job","She needs to get away from work","She is moving there"],correct:1},
+  {q:"What is going to happen at 8:00 AM?",opts:["They will check in","The flight will take off","They will set out"],correct:1},
+  {q:"What are they going to do after checking in at the hotel?",opts:["Set out and look around the city","Take off to another country","Drop off their luggage and leave"],correct:0},
+  {q:"Who is going to drop them off at the airport?",opts:["Her sister","A taxi driver","Her husband"],correct:2},
+  {q:"Which sentence uses 'will' for a prediction?",opts:["We are going to set off early","I think we will have an amazing time","My husband is going to drop us off"],correct:1}
+];
+
+const grammarQBank=[
+  {q:"We _____ set off early tomorrow morning.",opts:["are going to","did","were"],correct:0},
+  {q:"The plane _____ take off at 9 AM.",opts:["will","took","was"],correct:0},
+  {q:"Can you _____ me off at the station tomorrow?",opts:["drop","dropped","dropping"],correct:0},
+  {q:"I think it _____ be a great trip!",opts:["will","is going","was"],correct:0},
+  {q:"We _____ going to check in at the hotel at 3 PM.",opts:["are","will","did"],correct:0},
+  {q:"She _____ going to look around the old town tomorrow.",opts:["is","will","was"],correct:0},
+  {q:"They _____ set out to explore the mountains next week.",opts:["are going to","were going to","did"],correct:0},
+  {q:"I _____ probably get away for a few days next month.",opts:["will","am going","did"],correct:0}
+];
+
+const vocabBank=[
+  {phrasal:"get away",meaning:"Go on a vacation or escape"},
+  {phrasal:"set off",meaning:"Start a journey"},
+  {phrasal:"drop off",meaning:"Take someone to a place and leave them"},
+  {phrasal:"take off",meaning:"Leave the ground (plane)"},
+  {phrasal:"check in",meaning:"Register at a hotel or airport"},
+  {phrasal:"look around",meaning:"Explore what is near you"},
+  {phrasal:"set out",meaning:"Begin a trip with a purpose"},
+  {phrasal:"check out",meaning:"Leave a hotel after paying"},
+  {phrasal:"get on",meaning:"Enter a bus, train, or plane"},
+  {phrasal:"get off",meaning:"Leave a bus, train, or plane"},
+  {phrasal:"speed up",meaning:"Go faster or increase speed"},
+  {phrasal:"pick up",meaning:"Collect someone by car"}
+];
+
+// ========== TRAVEL AGENT CHAT (AI-powered) ==========
+let chatStep=0,studentMsgCount=0,chatDone=false,chatHistory=[];
+const MAX_STUDENT_MSGS=8;
+
+const AGENT_SYSTEM=`You are Lisa, a friendly travel agent at SunTrip Travel Agency. You are helping an ESL student (B1 level) plan a vacation over a phone call.
+
+YOUR ROLE:
+- Be warm, enthusiastic, and encouraging
+- Ask ONE clear question at a time to help them plan their trip
+- React naturally to what they say before asking your next question
+- Keep your responses short (2-3 sentences max)
+- Use simple, clear English appropriate for B1 level learners
+- Naturally use future tense ("will" and "going to") in your responses so the student hears good examples
+- Naturally use travel phrasal verbs (get away, set off, drop off, take off, check in, check out, look around, set out, pick up, get on, get off) when they fit
+
+CONVERSATION FLOW (guide the conversation through these topics naturally):
+1. Greet them and ask where they want to travel
+2. Ask about their travel dates and who is going
+3. Ask how they will get to the airport
+4. Ask about accommodation (hotel, hostel, Airbnb)
+5. Ask what activities they want to do at the destination
+6. Ask if there is anything special to book
+7. Wrap up warmly and wish them a great trip
+
+IMPORTANT:
+- Never correct the student's grammar
+- Never mention that you are an AI
+- Never break character as a travel agent
+- If the student writes something off-topic, gently guide them back to trip planning
+- After about 7 exchanges, start wrapping up the conversation naturally`;
+
+function initChat(){
+  chatStep=0;studentMsgCount=0;chatDone=false;chatLog='';
+  chatHistory=[];
+  document.getElementById('chatMessages').innerHTML='';
+  document.getElementById('chatCount').textContent='0';
+  document.getElementById('chatInput').disabled=false;
+  document.getElementById('chatSendBtn').disabled=false;
+  document.getElementById('chatNextBtn').classList.add('hidden');
+  document.getElementById('chatFeedback').classList.add('hidden');
+  
+  const greeting="Hello! Welcome to SunTrip Travel Agency! My name is Lisa. I'm going to help you plan an amazing vacation today. So, where are you thinking about traveling to?";
+  chatHistory.push({role:"assistant",content:greeting});
+  chatLog+='\nAgent: '+greeting;
+  addAgentMsg(greeting);
+}
+
+async function callAgent(studentText){
+  chatHistory.push({role:"user",content:studentText});
+  
+  // Add turn count context
+  const turnsLeft=MAX_STUDENT_MSGS-studentMsgCount;
+  let extraInstruction='';
+  if(turnsLeft<=2){
+    extraInstruction='\n[System note: The conversation is ending soon. Start wrapping up naturally and say goodbye.]';
+  }
+
+  try{
+    const response=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:200,
+        system:AGENT_SYSTEM+extraInstruction,
+        messages:chatHistory
+      })
+    });
+    const data=await response.json();
+    const agentText=data.content.map(b=>b.type==='text'?b.text:'').join('').trim();
+    chatHistory.push({role:"assistant",content:agentText});
+    chatLog+='\nAgent: '+agentText;
+    return agentText;
+  }catch(err){
+    console.error('Agent error:',err);
+    const fallback="That sounds great! Tell me more about your plans — where will you stay and what activities are you going to do?";
+    chatHistory.push({role:"assistant",content:fallback});
+    chatLog+='\nAgent: '+fallback;
+    return fallback;
+  }
+}
+
+function addAgentMsg(text){
+  const msgs=document.getElementById('chatMessages');
+  const typing=document.createElement('div');
+  typing.className='typing-indicator';
+  typing.id='typingIndicator';
+  typing.innerHTML='<span>.</span><span>.</span><span>.</span>';
+  msgs.appendChild(typing);
+  scrollChat();
+  setTimeout(()=>{
+    typing.remove();
+    const div=document.createElement('div');
+    div.className='chat-msg agent';
+    div.innerHTML='<span class="sender">🧳 Travel Agent Lisa</span>'+text;
+    msgs.appendChild(div);
+    scrollChat();
+  },800+Math.random()*600);
+}
+
+function addStudentMsg(text){
+  const msgs=document.getElementById('chatMessages');
+  const div=document.createElement('div');
+  div.className='chat-msg student';
+  div.innerHTML='<span class="sender">You</span>'+text;
+  msgs.appendChild(div);
+  scrollChat();
+}
+
+function scrollChat(){
+  const box=document.getElementById('chatBox');
+  setTimeout(()=>{box.scrollTop=box.scrollHeight;},100);
+}
+
+async function sendChat(){
+  if(chatDone)return;
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();
+  if(!text)return;
+
+  // Disable input while waiting
+  input.disabled=true;
+  document.getElementById('chatSendBtn').disabled=true;
+
+  addStudentMsg(text);
+  chatLog+='\nStudent: '+text;
+  studentMsgCount++;
+  document.getElementById('chatCount').textContent=studentMsgCount;
+  input.value='';
+
+  if(studentMsgCount>=MAX_STUDENT_MSGS){
+    // Final agent response then end
+    const reply=await callAgent(text+"\n[This is the student's last message. Say a warm goodbye and end the call.]");
+    addAgentMsg(reply);
+    setTimeout(()=>endChat(),2000);
+    return;
+  }
+
+  const reply=await callAgent(text);
+  addAgentMsg(reply);
+  
+  // Re-enable input after agent responds
+  setTimeout(()=>{
+    input.disabled=false;
+    document.getElementById('chatSendBtn').disabled=false;
+    input.focus();
+  },1500);
+}
+
+function endChat(){
+  chatDone=true;
+  document.getElementById('chatInput').disabled=true;
+  document.getElementById('chatSendBtn').disabled=true;
+
+  const text=chatLog.toLowerCase();
+  const phrasals=['get away','set off','drop off','take off','check in','check out','look around','set out','pick up','get on','get off','speed up','hurry up'].filter(p=>text.includes(p)).length;
+  const futureCount=(text.match(/\b(will |'ll |going to )/g)||[]).length;
+  const msgScore=Math.min(8,studentMsgCount)*1.5;
+  const pvScore=Math.min(5,phrasals)*1;
+  const futScore=Math.min(4,Math.floor(futureCount/2))*1;
+  scores.c=Math.min(20,Math.round(msgScore+pvScore+futScore));
+
+  let fb='<b>Conversation complete!</b> You sent <b>'+studentMsgCount+'</b> messages to the travel agent.<br>';
+  fb+='<b>Score: '+scores.c+'/20</b>';
+  document.getElementById('chatFeedback').innerHTML=fb;
+  document.getElementById('chatFeedback').classList.remove('hidden');
+  document.getElementById('chatNextBtn').classList.remove('hidden');
+}
+
+// ========== HELPERS ==========
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+
+function initQuestions(){
+  const rQs=shuffle([...readingQBank]).slice(0,3);
+  let rHTML='';
+  rQs.forEach((q,i)=>{
+    const so=q.opts.map((opt,idx)=>({text:opt,isCorrect:idx===q.correct}));
+    shuffle(so);
+    readingAnswers[i]=so.findIndex(o=>o.isCorrect);
+    rHTML+='<div class="question"><h4>'+(i+1)+'. '+q.q+'</h4>';
+    so.forEach((opt,j)=>{rHTML+='<div class="option" onclick="sel(this)" data-v="'+j+'"><div class="circle"></div>'+opt.text+'</div>';});
+    rHTML+='</div>';
+  });
+  document.getElementById('readingQuestions').innerHTML=rHTML;
+
+  vocabItems=shuffle([...vocabBank]).slice(0,6);
+  const sm=shuffle(vocabItems.map((v,i)=>({meaning:v.meaning,idx:i})));
+  let vHTML='<div class="match-container"><div class="match-col"><div class="match-col-header">Phrasal Verb</div>';
+  vocabItems.forEach((v,i)=>{vHTML+='<div class="match-item match-phrasal" data-idx="'+i+'" onclick="selectPhrasal(this)">'+v.phrasal+'</div>';});
+  vHTML+='</div><div class="match-col"><div class="match-col-header">Meaning</div>';
+  sm.forEach((m)=>{vHTML+='<div class="match-item match-meaning" data-idx="'+m.idx+'" onclick="selectMeaning(this)">'+m.meaning+'</div>';});
+  vHTML+='</div></div>';
+  document.getElementById('vocabQuestions').innerHTML=vHTML;
+
+  const gQs=shuffle([...grammarQBank]).slice(0,8);
+  let gHTML='';
+  gQs.forEach((q,i)=>{
+    const so=q.opts.map((opt,idx)=>({text:opt,isCorrect:idx===q.correct}));
+    shuffle(so);
+    grammarAnswers[i]=so.findIndex(o=>o.isCorrect);
+    gHTML+='<div class="question" data-c="'+grammarAnswers[i]+'"><h4>'+(i+1)+'. '+q.q+'</h4>';
+    so.forEach((opt,j)=>{gHTML+='<div class="option" onclick="sel(this)" data-v="'+j+'"><div class="circle"></div>'+opt.text+'</div>';});
+    gHTML+='</div>';
+  });
+  document.getElementById('grammarQuestions').innerHTML=gHTML;
+
+  initChat();
+}
+
+function startQuiz(){
+  name=document.getElementById('studentName').value.trim();
+  if(!name){alert('Please enter your name');return;}
+  initQuestions();
+  showSection('s1');
+}
+
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function sel(el){
+  el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function checkS1(){
+  let c=0;
+  document.querySelectorAll('#readingQuestions .question').forEach((q,i)=>{
+    const s=q.querySelector('.option.selected');
+    if(s&&parseInt(s.dataset.v)===readingAnswers[i])c++;
+  });
+  scores.l=c;showSection('s2');
+}
+
+let selectedPhrasal=null,vocabMatched=0,vocabTotal=6;
+const matchColors=['#5B5091','#F5A623','#22a6b3','#eb4d4b','#6ab04c','#e056fd'];
+let matchColorIdx=0;
+
+function selectPhrasal(el){
+  if(el.classList.contains('matched'))return;
+  document.querySelectorAll('.match-phrasal').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');selectedPhrasal=el;
+}
+function selectMeaning(el){
+  if(!selectedPhrasal||el.classList.contains('matched'))return;
+  if(selectedPhrasal.dataset.idx===el.dataset.idx){
+    const color=matchColors[matchColorIdx%matchColors.length];matchColorIdx++;
+    selectedPhrasal.classList.remove('active');selectedPhrasal.classList.add('matched');
+    selectedPhrasal.style.borderColor=color;selectedPhrasal.style.background=color+'22';
+    el.classList.add('matched');el.style.borderColor=color;el.style.background=color+'22';
+    vocabMatched++;selectedPhrasal=null;
+  }else{
+    el.classList.add('wrong');selectedPhrasal.classList.add('wrong');
+    setTimeout(()=>{el.classList.remove('wrong');selectedPhrasal.classList.remove('wrong','active');selectedPhrasal=null;},600);
+  }
+}
+function checkS2(){
+  scores.v=vocabMatched;
+  if(vocabMatched<vocabTotal){
+    document.getElementById('vocabFeedback').innerHTML='<b>Keep going!</b> You matched '+vocabMatched+'/'+vocabTotal+'. Try to match all pairs before continuing.';
+    document.getElementById('vocabFeedback').classList.remove('hidden');
+    if(vocabMatched>=Math.ceil(vocabTotal/2)){showSection('s3');}
+  }else{showSection('s3');}
+}
+
+document.getElementById('writing').addEventListener('input',function(){
+  document.getElementById('wc').textContent=this.value.trim().split(/\s+/).filter(w=>w).length;
+});
+
+function checkWriting(){
+  writingText=document.getElementById('writing').value;
+  const text=writingText.toLowerCase();
+  const phrasals=['get away','set off','drop off','take off','check in','check out','look around','set out','pick up'].filter(p=>text.includes(p)).length;
+  scores.w=Math.min(20,phrasals*4);
+  let fb='<b>Great job!</b> Your paragraph includes '+phrasals+' travel expressions from this week\'s lesson.<br><b>Score: '+scores.w+'/20</b>';
+  if(phrasals<5){fb+='<br><span style="color:#666">Tip: Try using more expressions like <i>get away, set off, drop off, take off, check in, look around, set out</i> to make your writing more natural!</span>';}
+  document.getElementById('wFeedback').innerHTML=fb;
+  document.getElementById('wFeedback').classList.remove('hidden');
+  document.getElementById('wBtn').classList.add('hidden');
+  document.getElementById('wNext').classList.remove('hidden');
+}
+
+async function toggleRec(){
+  if(!isRec){
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      mediaRec=new MediaRecorder(stream);chunks=[];
+      mediaRec.ondataavailable=e=>chunks.push(e.data);
+      mediaRec.onstop=()=>{
+        document.getElementById('audio').src=URL.createObjectURL(new Blob(chunks,{type:'audio/webm'}));
+        document.getElementById('audio').classList.remove('hidden');
+        document.getElementById('sBtn').disabled=false;
+      };
+      mediaRec.start();isRec=true;recTime=0;
+      document.getElementById('recBtn').classList.add('recording');
+      document.getElementById('recStatus').textContent='Recording...';
+      recTimer=setInterval(()=>{recTime++;
+        document.getElementById('timer').textContent=Math.floor(recTime/60)+':'+(recTime%60).toString().padStart(2,'0');
+      },1000);
+    }catch(e){alert('Microphone error: '+e.message);}
+  }else{
+    mediaRec.stop();mediaRec.stream.getTracks().forEach(t=>t.stop());
+    clearInterval(recTimer);isRec=false;
+    document.getElementById('recBtn').classList.remove('recording');
+    document.getElementById('recStatus').textContent='Recording saved!';
+  }
+}
+
+function checkSpeaking(){
+  scores.s=recTime>=30?20:recTime>=20?15:recTime>=10?10:5;
+  document.getElementById('sFeedback').innerHTML='<b>Duration:</b> '+Math.floor(recTime/60)+':'+(recTime%60).toString().padStart(2,'0')+'<br><b>Score: '+scores.s+'/20</b>';
+  document.getElementById('sFeedback').classList.remove('hidden');
+  showSection('s6');
+}
+
+function submitFinal(){
+  let c=0;
+  document.querySelectorAll('#grammarQuestions .question').forEach((q,i)=>{
+    const s=q.querySelector('.option.selected');
+    const ans=parseInt(q.dataset.c);
+    if(s){if(parseInt(s.dataset.v)===ans){c++;s.classList.add('correct');}
+    else{s.classList.add('incorrect');q.querySelector('[data-v="'+ans+'"]').classList.add('correct');}}
+  });
+  scores.g=c;
+  const total=scores.l+scores.v+scores.w+scores.c+scores.s+scores.g;
+  const maxTotal=3+6+20+20+20+8;
+  const pct=Math.round(total/maxTotal*100);
+  document.getElementById('finalPct').textContent=pct+'%';
+  document.getElementById('studentDisplay').textContent=name;
+  document.getElementById('scL').textContent=scores.l+'/3';
+  document.getElementById('scV').textContent=scores.v+'/6';
+  document.getElementById('scW').textContent=scores.w+'/20';
+  document.getElementById('scC').textContent=scores.c+'/20';
+  document.getElementById('scS').textContent=scores.s+'/20';
+  document.getElementById('scG').textContent=scores.g+'/8';
+  showSection('results');
+}
+
+function submitToTeacher(){
+  const total=scores.l+scores.v+scores.w+scores.c+scores.s+scores.g;
+  const maxTotal=3+6+20+20+20+8;
+  const pct=Math.round(total/maxTotal*100);
+  const url='https://docs.google.com/forms/d/e/1FAIpQLSf9uEs5MqWLveyoaMBxeWx3pW1b90siwgaom766CpwqnOI7Dg/viewform?usp=pp_url'
+    +'&entry.518151516='+encodeURIComponent(name)
+    +'&entry.864654596='+encodeURIComponent(SESSION)
+    +'&entry.258952242='+encodeURIComponent(scores.l+'/3')
+    +'&entry.859150584='+encodeURIComponent(scores.v+'/6')
+    +'&entry.1121796741='+encodeURIComponent(scores.w+'/20')
+    +'&entry.1435469716='+encodeURIComponent(scores.s+'/20')
+    +'&entry.1998281944='+encodeURIComponent(scores.g+'/8')
+    +'&entry.1207114914='+encodeURIComponent(pct+'%')
+    +'&entry.939912807='+encodeURIComponent(writingText+'\n\n--- TRAVEL AGENT CHAT ---'+chatLog);
+  window.open(url,'_blank');
+}
+</script>
+</body></html>
