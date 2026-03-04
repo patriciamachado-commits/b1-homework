@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1 Session 16: Final Review</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#5B5091;min-height:100vh;padding:20px}
+.container{max-width:800px;margin:0 auto}
+.header{background:#fff;border-radius:20px;padding:30px;margin-bottom:20px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.header h1{color:#5B5091;font-size:1.4em}
+.header p{color:#888}
+.badge{background:#ef4444;color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em}
+.level-badge{background:#5B5091;color:#fff;padding:6px 16px;border-radius:20px;font-size:.9em;display:inline-block;margin-bottom:10px}
+.card{background:#fff;border-radius:16px;padding:25px;margin-bottom:20px}
+.card h2{color:#5B5091;margin-bottom:15px}
+label{font-weight:600;color:#333;display:block;margin-bottom:8px}
+input[type="text"],select{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px}
+input:focus,select:focus{outline:none;border-color:#5B5091}
+.btn{background:#5B5091;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;width:100%;margin-top:10px;transition:all .2s}
+.btn:hover{background:#4a4080}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-orange{background:#F5A623}
+.btn-secondary{background:#f5f5f5;color:#333}
+.section{display:none}
+.section.active{display:block}
+.reading-box{background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #5B5091;line-height:1.8}
+.question{background:#f8f9fa;border-radius:12px;padding:20px;margin:15px 0;border:1px solid #eee}
+.question h4{margin-bottom:15px;color:#333}
+.option{padding:14px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#5B5091;background:#f3f0ff}
+.option.selected{border-color:#5B5091;background:#e8e4f5}
+.option.correct{border-color:#22c55e;background:#f0fdf4}
+.option.incorrect{border-color:#ef4444;background:#fef2f2}
+.circle{width:20px;height:20px;border:2px solid #ccc;border-radius:50%;flex-shrink:0}
+.option.selected .circle{border-color:#5B5091;background:#5B5091}
+textarea{width:100%;min-height:120px;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-family:inherit;resize:vertical}
+textarea:focus{outline:none;border-color:#5B5091}
+.progress{height:8px;background:#e0e0e0;border-radius:4px;margin-bottom:20px}
+.progress-bar{height:100%;background:#F5A623;border-radius:4px;transition:width .3s}
+.progress-text{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;color:#666}
+.score-card{background:linear-gradient(135deg,#5B5091,#7B6DB0);border-radius:20px;padding:35px;color:#fff;text-align:center}
+.score-big{font-size:4em;font-weight:700}
+.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}
+.scores>div{background:rgba(255,255,255,.15);border-radius:12px;padding:12px}
+.scores label{font-size:.75em;opacity:.9}
+.scores span{font-size:1.4em;font-weight:700;display:block}
+.cefr-box{background:linear-gradient(135deg,#1565C0,#1976D2);color:#fff;border-radius:12px;padding:20px;margin-top:20px;text-align:center}
+.cefr-box h3{margin-bottom:10px}
+.cefr-level{font-size:2em;font-weight:700}
+.not-submitted{background:#ffebee;border:2px solid #ef5350;border-radius:12px;padding:20px;text-align:center;animation:pulse-warning 2s infinite}
+.not-submitted h3{color:#c62828;margin-bottom:10px}
+@keyframes pulse-warning{0%,100%{box-shadow:0 0 0 0 rgba(239,83,80,.4)}50%{box-shadow:0 0 0 10px rgba(239,83,80,0)}}
+.submitted-success{background:#e8f5e9;border:2px solid #66bb6a;border-radius:12px;padding:20px;text-align:center;display:none}
+.submitted-success h3{color:#2e7d32}
+.prompt-box{background:#f3f0ff;border:1px solid #d4ccf0;border-radius:12px;padding:20px;margin-bottom:20px}
+.prompt-box h4{color:#5B5091;margin-bottom:10px}
+.word-count{text-align:right;color:#888;font-size:14px;margin-top:8px}
+.feedback{background:#f3f0ff;border:1px solid #5B5091;border-radius:12px;padding:20px;margin-top:15px}
+.hidden{display:none}
+.nav-buttons{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+@media(max-width:600px){.scores{grid-template-columns:repeat(3,1fr)}.nav-buttons{flex-direction:column}}
+
+.scenario-option{padding:15px;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.scenario-option:hover{border-color:#5B5091;background:#f3f0ff}
+.scenario-option.selected{border-color:#5B5091;background:#e8e4f5}
+.chat-container{background:#f5f5f5;border-radius:16px;padding:20px;margin:20px 0;min-height:200px;max-height:400px;overflow-y:auto}
+.chat-bubble{max-width:85%;padding:12px 16px;border-radius:16px;margin-bottom:12px;line-height:1.5}
+.chat-ai{background:#5B5091;color:#fff;border-bottom-left-radius:4px}
+.chat-user{background:#fff;border:2px solid #5B5091;color:#333;border-bottom-right-radius:4px}
+.chat-row{display:flex;margin-bottom:12px}
+.chat-row.ai{justify-content:flex-start}
+.chat-row.user{justify-content:flex-end}
+.chat-label{font-size:11px;color:#666;margin-bottom:4px;font-weight:600}
+.mic-btn{width:80px;height:80px;border-radius:50%;background:#5B5091;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:15px auto;transition:all .2s}
+.mic-btn:hover{background:#4a4080;transform:scale(1.05)}
+.mic-btn:disabled{background:#ccc;cursor:not-allowed;transform:none}
+.mic-btn.recording{background:#ef4444;animation:pulse-rec 1.5s infinite}
+.mic-btn svg{width:36px;height:36px;fill:#fff}
+@keyframes pulse-rec{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}
+.status-text{text-align:center;color:#666;margin:10px 0;font-size:14px}
+.exchange-counter{text-align:center;color:#5B5091;font-weight:600;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="level-badge">CEFR Level B1 - Intermediate</div>
+        <h1>📘 Session 16: Final Review <span class="badge">FINAL</span></h1>
+        <p>Week 8 - Practical Skills 3 Complete Review</p>
+    </div>
+
+    <div class="section active" id="start">
+        <div class="card">
+            <h2>Welcome to Your Final Review!</h2>
+            <p style="color:#666;margin-bottom:20px">This review covers everything you learned in PS3:</p>
+            <ul style="color:#666;margin-bottom:20px;padding-left:20px">
+                <li>Holiday Traditions & Comparisons</li>
+                <li>Banking & Financial Situations</li>
+                <li>Shopping & Open-Air Markets</li>
+                <li>Household Chores & Cleaning</li>
+                <li>Transportation & Commuting</li>
+                <li>School Communication</li>
+                <li>Travel Planning & Phrasal Verbs</li>
+            </ul>
+            <label>Your Full Name</label>
+            <input type="text" id="studentName" placeholder="Enter your name...">
+            <label>Your Class</label>
+            <select id="studentClass">
+                <option value="">Select your class...</option>
+                <option value="3072-MW-11AM">3072 - Mon/Wed 11:00 AM (Laura)</option>
+                <option value="3074-MW-8PM">3074 - Mon/Wed 8:00 PM (Laura)</option>
+                <option value="3080-TTH-11AM">3080 - Tue/Thu 11:00 AM (Laura)</option>
+                <option value="3082-TTH-8PM">3082 - Tue/Thu 8:00 PM (Laura)</option>
+                <option value="3085-TTH-945PM">3085 - Tue/Thu 9:45 PM (Eunice)</option>
+            </select>
+            <button class="btn" onclick="startQuiz()">Start Final Review</button>
+        </div>
+    </div>
+
+    <div class="section" id="s1">
+        <div class="card">
+            <div class="progress-text"><span>Section 1 of 5</span><span>20%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:20%"></div></div>
+            <h2>Reading Comprehension</h2>
+            <div class="reading-box">
+                <p><strong>Planning a Trip</strong></p>
+                <p>Carlos and his family are planning a trip to New York City next month. They have been saving money for this vacation for over a year. "This will be the most exciting trip we have ever taken!" said Carlos.</p>
+                <p>They need to book a hotel, but the hotels in Manhattan are more expensive than they expected. Carlos found a cheaper hotel in Brooklyn that has better reviews than some Manhattan hotels.</p>
+                <p>"We should take the subway," his wife suggested. "It is faster than taking a taxi, and much cheaper too." Carlos agreed, but he was worried about getting lost.</p>
+                <p>They plan to visit the Statue of Liberty, Central Park, and Times Square. Carlos wants to try authentic New York pizza because his friend told him it is the best pizza in the world. They will be staying for five days, and they are going to take lots of pictures.</p>
+            </div>
+            <div id="readingQuestions"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="goBack0()">Back</button>
+                <button class="btn" onclick="checkS1()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="s2">
+        <div class="card">
+            <div class="progress-text"><span>Section 2 of 5</span><span>40%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:40%"></div></div>
+            <h2>Vocabulary Matching</h2>
+            <div class="prompt-box"><h4>Match each word with its correct definition</h4><p style="color:#666">Tap a word on the left, then tap its matching definition on the right.</p></div>
+            <div id="vocabQuestions"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="goTo('s1')">Back</button>
+                <button class="btn" onclick="checkS2()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="s3">
+        <div class="card">
+            <div class="progress-text"><span>Section 3 of 5</span><span>60%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:60%"></div></div>
+            <h2>Writing</h2>
+            <div class="prompt-box">
+                <h4>Writing Task</h4>
+                <p>Write about a <strong>trip you are planning</strong> OR <strong>a trip you took</strong> (6-8 sentences).</p>
+                <p style="margin-top:10px;color:#666">Include:</p>
+                <ul style="padding-left:20px;color:#666">
+                    <li>Where you are going / went</li>
+                    <li>How you will travel / traveled (transportation)</li>
+                    <li>Use comparatives (cheaper, better, more exciting)</li>
+                    <li>Use future tense (will, going to) OR past tense</li>
+                </ul>
+            </div>
+            <textarea id="writing" placeholder="Write here..." oninput="updateWC()"></textarea>
+            <div class="word-count">Words: <span id="wc">0</span></div>
+            <div class="feedback hidden" id="wFeedback"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="goTo('s2')">Back</button>
+                <button class="btn" id="wBtn" onclick="checkWriting()">Get Feedback</button>
+                <button class="btn hidden" id="wNext" onclick="goTo('s4')">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="s4">
+        <div class="card">
+            <div class="progress-text"><span>Section 4 of 5</span><span>80%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:80%"></div></div>
+            <h2>Speaking - Role Play</h2>
+            
+            <div id="scenarioSelection">
+                <div class="prompt-box">
+                    <h4>Choose a role-play scenario:</h4>
+                    <p style="color:#666">You will have a conversation with 6 exchanges.</p>
+                </div>
+                <div class="scenario-option" onclick="selectScenario(1)">
+                    <strong>🏦 Scenario 1: At the Bank</strong>
+                    <p style="color:#666;font-size:14px;margin-top:5px">You want to open a bank account or ask about services.</p>
+                </div>
+                <div class="scenario-option" onclick="selectScenario(2)">
+                    <strong>🛒 Scenario 2: Shopping at a Market</strong>
+                    <p style="color:#666;font-size:14px;margin-top:5px">You are shopping and want to compare products and prices.</p>
+                </div>
+                <div class="scenario-option" onclick="selectScenario(3)">
+                    <strong>✈️ Scenario 3: Planning a Trip</strong>
+                    <p style="color:#666;font-size:14px;margin-top:5px">Discuss travel plans with a friend or travel agent.</p>
+                </div>
+            </div>
+
+            <div id="rolePlayArea" style="display:none">
+                <div style="background:#e8e4f5;padding:10px 15px;border-radius:8px;margin-bottom:15px;text-align:center">
+                    <strong id="scenarioTitle" style="color:#5B5091"></strong>
+                </div>
+                <div class="exchange-counter" id="exchangeCounter">Exchange 1 of 6</div>
+                <div class="chat-container" id="chatContainer"></div>
+                <div class="status-text" id="statusText">Click the microphone to respond</div>
+                <button class="mic-btn" id="micBtn" onclick="toggleMic()" disabled>
+                    <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </button>
+            </div>
+
+            <div class="feedback hidden" id="sFeedback"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="goTo('s3')">Back</button>
+                <button class="btn" id="sBtn" onclick="finishSpeaking()" style="display:none">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="s5">
+        <div class="card">
+            <div class="progress-text"><span>Section 5 of 5</span><span>100%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:100%"></div></div>
+            <h2>Grammar Quiz</h2>
+            <div id="grammarQuestions"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="goTo('s4')">Back</button>
+                <button class="btn btn-orange" onclick="submitFinal()">Submit Final Review</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="results">
+        <div class="score-card">
+            <p style="opacity:.8">Congratulations! Practical Skills 3 Complete!</p>
+            <div class="score-big" id="finalPct">0%</div>
+            <p id="studentDisplay"></p>
+            <div class="scores">
+                <div><label>Reading</label><span id="scL">0/3</span></div>
+                <div><label>Vocab</label><span id="scV">0/6</span></div>
+                <div><label>Writing</label><span id="scW">0/20</span></div>
+                <div><label>Speaking</label><span id="scS">0/20</span></div>
+                <div><label>Grammar</label><span id="scG">0/8</span></div>
+            </div>
+            <div class="cefr-box">
+                <h3>Your CEFR Progress</h3>
+                <div class="cefr-level" id="cefrLevel">B1</div>
+                <p id="cefrMessage">You have completed the B1 Intermediate level!</p>
+            </div>
+            <div style="margin-top:25px">
+                <div class="not-submitted" id="notSubmittedWarning">
+                    <h3>NOT YET SUBMITTED</h3>
+                    <p>Click the button below to submit your results to your teacher</p>
+                </div>
+                <div class="submitted-success" id="submittedSuccess">
+                    <h3>Submitted Successfully!</h3>
+                    <p>Your teacher will receive your results</p>
+                </div>
+                <button class="btn btn-orange" id="submitBtn" onclick="submitToTeacher()" style="margin-top:15px;font-size:20px;padding:20px">Submit to Teacher</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const SESSION='B1 Session 16 (FINAL)';
+let studentName='',studentClass='',scores={l:0,v:0,w:0,s:0,g:0},writingText='';
+let readingAnswers=[],grammarAnswers=[];
+
+let selectedScenario=0;
+let currentExchange=0;
+let transcript=[];
+let isRecording=false;
+let recognition=null;
+
+const scenarios={
+    1:{
+        title:'At the Bank',
+        aiRole:'Bank Teller',
+        userRole:'Customer',
+        exchanges:[
+            {ai:"Good morning! Welcome to First National Bank. How can I help you today?"},
+            {ai:"Of course! We have several account options. Are you interested in a checking account or a savings account?"},
+            {ai:"Great choice! A checking account has no monthly fee if you keep a minimum balance of $500. Is that okay for you?"},
+            {ai:"Perfect! I will need to see your ID and proof of address. Do you have those documents with you?"},
+            {ai:"Excellent! Would you like to set up online banking as well? It is free and very convenient."},
+            {ai:"Wonderful! Your account will be ready in about 10 minutes. Is there anything else I can help you with today?"}
+        ]
+    },
+    2:{
+        title:'Shopping at a Market',
+        aiRole:'Vendor',
+        userRole:'Customer',
+        exchanges:[
+            {ai:"Hello! Welcome to my stand. We have the freshest fruits and vegetables in the market. What are you looking for today?"},
+            {ai:"Great choice! These apples are the best ones we have. They are sweeter than the green ones. How many would you like?"},
+            {ai:"Sure! We also have oranges on sale today. They are cheaper than last week. Would you like to try some?"},
+            {ai:"These oranges are more expensive, but they are much juicier. Which ones do you prefer?"},
+            {ai:"Good choice! Anything else? Our tomatoes are the freshest in the whole market."},
+            {ai:"That will be $12.50 total. Cash or card? Thank you for shopping with us!"}
+        ]
+    },
+    3:{
+        title:'Planning a Trip',
+        aiRole:'Travel Agent',
+        userRole:'Customer',
+        exchanges:[
+            {ai:"Hello! Welcome to Sunshine Travel Agency. Are you planning a vacation? Where would you like to go?"},
+            {ai:"Wonderful destination! When are you planning to travel, and how many people will be going?"},
+            {ai:"Great! Would you prefer to fly or take a train? Flying is faster, but the train is cheaper and more scenic."},
+            {ai:"Good choice! For hotels, we have options in the city center or near the beach. The beach hotels are more relaxing but farther from attractions."},
+            {ai:"I think you will love it there! Would you like me to include travel insurance? It is not expensive and gives you peace of mind."},
+            {ai:"Perfect! I will prepare your itinerary. You will receive all the details by email tomorrow. Have a wonderful trip!"}
+        ]
+    }
+};
+
+const readingQBank=[
+    {q:"How long have Carlos and his family been saving for this trip?",opts:["Six months","Over a year","Two years"],correct:1},
+    {q:"Why did Carlos choose a hotel in Brooklyn?",opts:["It is closer to Manhattan","It is cheaper with better reviews","His friend lives there"],correct:1},
+    {q:"According to his wife, why should they take the subway?",opts:["It is more comfortable","It is faster and cheaper","It is safer"],correct:1},
+    {q:"What does Carlos want to try in New York?",opts:["Hot dogs","Authentic pizza","Hamburgers"],correct:1},
+    {q:"How many days will they stay in New York?",opts:["Three days","Five days","One week"],correct:1}
+];
+
+const grammarQBank=[
+    {q:"This hotel is _____ than the one downtown.",opts:["cheaper","more cheap","cheapest"],correct:0},
+    {q:"She speaks English _____ than her brother.",opts:["more fluently","fluently","most fluently"],correct:0},
+    {q:"This is the _____ restaurant in the city.",opts:["most expensive","more expensive","expensiver"],correct:0},
+    {q:"I _____ visit my grandmother next weekend.",opts:["will","going to","am go"],correct:0},
+    {q:"They _____ to Paris next summer.",opts:["are going to travel","will traveling","going travel"],correct:0},
+    {q:"You _____ bring your passport to the bank.",opts:["should","should to","must to"],correct:0},
+    {q:"The train is _____ than the bus, but slower.",opts:["more comfortable","comfortabler","most comfortable"],correct:0},
+    {q:"We _____ our hotel before the trip.",opts:["have to book","have book","must to book"],correct:0},
+    {q:"This market has _____ prices in town.",opts:["the lowest","the lower","more low"],correct:0},
+    {q:"I _____ the dishes after dinner.",opts:["will do","will doing","going do"],correct:0}
+];
+
+const vocabMatchBank=[
+    {term:"Deposit",def:"Money you put in the bank regularly"},
+    {term:"Open-air market",def:"A place to buy fresh fruits and vegetables outdoors"},
+    {term:"Housework",def:"The work you do to keep your house clean"},
+    {term:"Commuting",def:"Traveling to work every day"},
+    {term:"Check in",def:"Arrive and register at a hotel"},
+    {term:"Put down",def:"The opposite of pick up"},
+    {term:"Debit card",def:"A card to pay directly from your bank account"},
+    {term:"Look forward to",def:"To feel excited about something in the future"},
+    {term:"Receipt",def:"A document showing how much money you spent"},
+    {term:"Set off",def:"To start traveling on a trip"}
+];
+let vocabPairs=[],vocabSelectedTerm=null,vocabMatched=0,vocabTotal=6;
+
+function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    return arr;
+}
+
+function initQuestions(){
+    const rQs=shuffle([...readingQBank]).slice(0,3);
+    let rHTML='';
+    rQs.forEach((q,i)=>{
+        const opts=q.opts.map((o,idx)=>({text:o,isCorrect:idx===q.correct}));
+        shuffle(opts);
+        readingAnswers[i]=opts.findIndex(o=>o.isCorrect);
+        rHTML+='<div class="question"><h4>'+(i+1)+'. '+q.q+'</h4>';
+        opts.forEach((o,j)=>{
+            rHTML+='<div class="option" onclick="sel(this)" data-v="'+j+'"><div class="circle"></div>'+o.text+'</div>';
+        });
+        rHTML+='</div>';
+    });
+    document.getElementById('readingQuestions').innerHTML=rHTML;
+
+    vocabPairs=shuffle([...vocabMatchBank]).slice(0,6);
+    vocabMatched=0;vocabTotal=6;vocabSelectedTerm=null;
+    const shuffledDefs=shuffle(vocabPairs.map((p,i)=>({def:p.def,idx:i})));
+    let vHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">';
+    vHTML+='<div><h4 style="color:#5B5091;margin-bottom:10px;text-align:center">Words</h4>';
+    vocabPairs.forEach((p,i)=>{
+        vHTML+='<div class="option match-term" data-idx="'+i+'" onclick="selectTerm(this)" style="justify-content:center;font-weight:600;text-align:center">'+p.term+'</div>';
+    });
+    vHTML+='</div><div><h4 style="color:#5B5091;margin-bottom:10px;text-align:center">Definitions</h4>';
+    shuffledDefs.forEach(d=>{
+        vHTML+='<div class="option match-def" data-idx="'+d.idx+'" onclick="selectDef(this)" style="font-size:14px;text-align:center;justify-content:center">'+d.def+'</div>';
+    });
+    vHTML+='</div></div>';
+    vHTML+='<div id="matchFeedback" style="text-align:center;margin-top:15px;font-weight:600"></div>';
+    document.getElementById('vocabQuestions').innerHTML=vHTML;
+
+    const gQs=shuffle([...grammarQBank]).slice(0,8);
+    let gHTML='';
+    gQs.forEach((q,i)=>{
+        const opts=q.opts.map((o,idx)=>({text:o,isCorrect:idx===q.correct}));
+        shuffle(opts);
+        grammarAnswers[i]=opts.findIndex(o=>o.isCorrect);
+        gHTML+='<div class="question" data-c="'+grammarAnswers[i]+'"><h4>'+(i+1)+'. '+q.q+'</h4>';
+        opts.forEach((o,j)=>{
+            gHTML+='<div class="option" onclick="sel(this)" data-v="'+j+'"><div class="circle"></div>'+o.text+'</div>';
+        });
+        gHTML+='</div>';
+    });
+    document.getElementById('grammarQuestions').innerHTML=gHTML;
+}
+
+function startQuiz(){
+    studentName=document.getElementById('studentName').value.trim();
+    studentClass=document.getElementById('studentClass').value;
+    if(!studentName){alert('Please enter your name');return;}
+    if(!studentClass){alert('Please select your class');return;}
+    initQuestions();
+    goTo('s1');
+}
+
+function goTo(id){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+}
+
+function goBack0(){
+    document.getElementById('s1').classList.remove('active');
+    document.getElementById('start').classList.add('active');
+}
+
+function sel(el){
+    el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+function checkS1(){
+    let correct=0;
+    document.querySelectorAll('#readingQuestions .question').forEach((q,i)=>{
+        const selected=q.querySelector('.option.selected');
+        if(selected&&parseInt(selected.dataset.v)===readingAnswers[i])correct++;
+    });
+    scores.l=correct;
+    goTo('s2');
+}
+
+function selectTerm(el){
+    if(el.classList.contains('matched'))return;
+    document.querySelectorAll('.match-term').forEach(t=>t.classList.remove('selected'));
+    el.classList.add('selected');
+    vocabSelectedTerm=parseInt(el.dataset.idx);
+}
+
+function selectDef(el){
+    if(el.classList.contains('matched')||vocabSelectedTerm===null)return;
+    const defIdx=parseInt(el.dataset.idx);
+    const termEl=document.querySelector('.match-term[data-idx="'+vocabSelectedTerm+'"');
+    if(defIdx===vocabSelectedTerm){
+        termEl.classList.remove('selected');termEl.classList.add('matched');
+        termEl.style.background='#f0fdf4';termEl.style.borderColor='#22c55e';termEl.style.opacity='0.7';termEl.style.cursor='default';
+        el.classList.add('matched');el.style.background='#f0fdf4';el.style.borderColor='#22c55e';el.style.opacity='0.7';el.style.cursor='default';
+        vocabMatched++;
+        document.getElementById('matchFeedback').innerHTML='<span style="color:#22c55e">Correct! '+vocabMatched+'/'+vocabTotal+' matched</span>';
+    }else{
+        termEl.classList.remove('selected');
+        termEl.style.background='#fef2f2';termEl.style.borderColor='#ef4444';
+        el.style.background='#fef2f2';el.style.borderColor='#ef4444';
+        setTimeout(()=>{
+            if(!termEl.classList.contains('matched')){termEl.style.background='';termEl.style.borderColor='#e0e0e0';}
+            if(!el.classList.contains('matched')){el.style.background='';el.style.borderColor='#e0e0e0';}
+        },800);
+        document.getElementById('matchFeedback').innerHTML='<span style="color:#ef4444">Try again!</span>';
+    }
+    vocabSelectedTerm=null;
+}
+
+function checkS2(){
+    scores.v=vocabMatched;
+    goTo('s3');
+}
+
+function updateWC(){
+    document.getElementById('wc').textContent=document.getElementById('writing').value.trim().split(/\s+/).filter(w=>w).length;
+}
+
+function checkWriting(){
+    writingText=document.getElementById('writing').value;
+    const t=writingText.toLowerCase();
+    const wc=t.trim().split(/\s+/).filter(w=>w).length;
+    
+    if(wc<15){
+        alert('Please write at least 15 words');
+        return;
+    }
+    
+    let errorCount=0;
+    if(/more cheaper|more better|more faster|most cheapest/i.test(t)) errorCount++;
+    
+    const hasComparative=/more \w+|.+er than|better|worse|cheaper|faster|easier/i.test(t);
+    const hasFuture=/will |going to |'ll /i.test(t);
+    const hasTravelVocab=/trip|travel|visit|hotel|flight|train|bus|airport|vacation|beach|city/i.test(t);
+    
+    let score=0;
+    score+=(hasComparative?6:0);
+    score+=(hasFuture?5:0);
+    score+=(hasTravelVocab?4:0);
+    score+=(wc>=60?5:wc>=40?3:wc>=20?2:1);
+    score-=(errorCount*3);
+    score=Math.max(0,Math.min(20,Math.round(score)));
+    
+    scores.w=score;
+    
+    let feedbackHTML='<h4>Feedback</h4>';
+    feedbackHTML+='<p>Word count: '+wc+'</p>';
+    if(errorCount>0){
+        feedbackHTML+='<p style="color:#ef4444"><strong>Grammar errors found: '+errorCount+'</strong></p>';
+    }
+    feedbackHTML+='<p><strong>Score: '+scores.w+'/20</strong></p>';
+    
+    document.getElementById('wFeedback').innerHTML=feedbackHTML;
+    document.getElementById('wFeedback').classList.remove('hidden');
+    document.getElementById('wBtn').classList.add('hidden');
+    document.getElementById('wNext').classList.remove('hidden');
+}
+
+function selectScenario(num){
+    selectedScenario=num;
+    const scenario=scenarios[num];
+    
+    document.querySelectorAll('.scenario-option').forEach((el,i)=>{
+        el.classList.toggle('selected',i===num-1);
+    });
+    
+    document.getElementById('scenarioSelection').style.display='none';
+    document.getElementById('rolePlayArea').style.display='block';
+    document.getElementById('scenarioTitle').textContent=scenario.title+' - You are: '+scenario.userRole;
+    
+    transcript=[];
+    currentExchange=0;
+    document.getElementById('chatContainer').innerHTML='';
+    updateExchangeCounter();
+    
+    setTimeout(()=>{
+        playAIMessage();
+    },500);
+}
+
+function updateExchangeCounter(){
+    const total=scenarios[selectedScenario].exchanges.length;
+    document.getElementById('exchangeCounter').textContent='Exchange '+(currentExchange+1)+' of '+total;
+}
+
+function addMessage(sender,text){
+    const container=document.getElementById('chatContainer');
+    const scenario=scenarios[selectedScenario];
+    const label=sender==='ai'?scenario.aiRole:scenario.userRole;
+    const bubbleClass=sender==='ai'?'chat-ai':'chat-user';
+    
+    const row=document.createElement('div');
+    row.className='chat-row '+sender;
+    row.innerHTML='<div><div class="chat-label">'+label+'</div><div class="chat-bubble '+bubbleClass+'">'+text+'</div></div>';
+    container.appendChild(row);
+    container.scrollTop=container.scrollHeight;
+}
+
+function speakText(text,callback){
+    if('speechSynthesis' in window){
+        window.speechSynthesis.cancel();
+        const utterance=new SpeechSynthesisUtterance(text);
+        utterance.rate=0.9;
+        utterance.lang='en-US';
+        utterance.onend=function(){
+            if(callback)callback();
+        };
+        window.speechSynthesis.speak(utterance);
+    }else{
+        if(callback)setTimeout(callback,1500);
+    }
+}
+
+function playAIMessage(){
+    const scenario=scenarios[selectedScenario];
+    const exchange=scenario.exchanges[currentExchange];
+    
+    document.getElementById('micBtn').disabled=true;
+    document.getElementById('statusText').textContent='Listen...';
+    
+    addMessage('ai',exchange.ai);
+    transcript.push(scenario.aiRole+': '+exchange.ai);
+    
+    speakText(exchange.ai,function(){
+        if(currentExchange>=scenario.exchanges.length-1){
+            endConversation();
+        }else{
+            document.getElementById('micBtn').disabled=false;
+            document.getElementById('statusText').textContent='Your turn! Click the microphone to respond';
+        }
+    });
+}
+
+function toggleMic(){
+    if(isRecording){
+        stopRecording();
+    }else{
+        startRecording();
+    }
+}
+
+function startRecording(){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){
+        const response=prompt('Speech recognition not available. Type your response:');
+        if(response){
+            handleUserResponse(response);
+        }
+        return;
+    }
+    
+    recognition=new SR();
+    recognition.continuous=false;
+    recognition.interimResults=false;
+    recognition.lang='en-US';
+    
+    recognition.onstart=function(){
+        isRecording=true;
+        document.getElementById('micBtn').classList.add('recording');
+        document.getElementById('statusText').textContent='Listening... Click to stop';
+    };
+    
+    recognition.onresult=function(event){
+        const text=event.results[0][0].transcript;
+        handleUserResponse(text);
+    };
+    
+    recognition.onerror=function(event){
+        stopRecording();
+        if(event.error==='no-speech'){
+            document.getElementById('statusText').textContent='No speech detected. Try again.';
+        }
+    };
+    
+    recognition.onend=function(){
+        if(isRecording) stopRecording();
+    };
+    
+    try{recognition.start();}catch(e){}
+}
+
+function stopRecording(){
+    isRecording=false;
+    document.getElementById('micBtn').classList.remove('recording');
+    if(recognition){try{recognition.stop();}catch(e){}}
+}
+
+function handleUserResponse(userText){
+    stopRecording();
+    const scenario=scenarios[selectedScenario];
+    
+    addMessage('user',userText);
+    transcript.push(scenario.userRole+': '+userText);
+    
+    currentExchange++;
+    updateExchangeCounter();
+    
+    document.getElementById('micBtn').disabled=true;
+    document.getElementById('statusText').textContent='';
+    
+    setTimeout(()=>{playAIMessage();},1000);
+}
+
+function endConversation(){
+    document.getElementById('micBtn').disabled=true;
+    document.getElementById('statusText').textContent='Conversation complete!';
+    
+    scores.s=Math.min(20,currentExchange*4);
+    
+    const scenario=scenarios[selectedScenario];
+    document.getElementById('sFeedback').innerHTML='<h4>Role Play Complete!</h4><p>Scenario: '+scenario.title+'</p><p>Exchanges completed: '+currentExchange+'/5</p><p><strong>Score: '+scores.s+'/20</strong></p>';
+    document.getElementById('sFeedback').classList.remove('hidden');
+    document.getElementById('sBtn').style.display='block';
+}
+
+function finishSpeaking(){
+    goTo('s5');
+}
+
+function submitFinal(){
+    let correct=0;
+    document.querySelectorAll('#grammarQuestions .question').forEach((q,i)=>{
+        const sel=q.querySelector('.option.selected');
+        const ans=parseInt(q.dataset.c);
+        if(sel){
+            if(parseInt(sel.dataset.v)===ans){
+                correct++;
+                sel.classList.add('correct');
+            }else{
+                sel.classList.add('incorrect');
+                q.querySelector('[data-v="'+ans+'"]').classList.add('correct');
+            }
+        }
+    });
+    scores.g=correct;
+    
+    const total=scores.l+scores.v+scores.w+scores.s+scores.g;
+    const pct=Math.round(total/57*100);
+    
+    document.getElementById('finalPct').textContent=pct+'%';
+    document.getElementById('studentDisplay').textContent=studentName+' ['+studentClass+']';
+    document.getElementById('scL').textContent=scores.l+'/3';
+    document.getElementById('scV').textContent=scores.v+'/6';
+    document.getElementById('scW').textContent=scores.w+'/20';
+    document.getElementById('scS').textContent=scores.s+'/20';
+    document.getElementById('scG').textContent=scores.g+'/8';
+    
+    let cefrLevel='B1';
+    let cefrMsg='';
+    if(pct>=85){
+        cefrLevel='B1+ - B2';
+        cefrMsg='Excellent! You are ready to move to B2 Upper Intermediate level!';
+    }else if(pct>=70){
+        cefrLevel='B1';
+        cefrMsg='Great job! You have solid B1 Intermediate skills.';
+    }else if(pct>=50){
+        cefrLevel='B1-';
+        cefrMsg='Good progress! Keep practicing to strengthen your B1 skills.';
+    }else{
+        cefrLevel='A2+';
+        cefrMsg='You may need more practice at the B1 level before moving on.';
+    }
+    document.getElementById('cefrLevel').textContent=cefrLevel;
+    document.getElementById('cefrMessage').textContent=cefrMsg;
+    
+    goTo('results');
+}
+
+function submitToTeacher(){
+    const pct=Math.round((scores.l+scores.v+scores.w+scores.s+scores.g)/57*100);
+    const sn=studentName+' ['+studentClass+']';
+    const transcriptText=transcript.length>0?transcript.join('\n'):'[No role play completed]';
+    const cefrResult=document.getElementById('cefrLevel').textContent;
+    
+    const url='https://docs.google.com/forms/d/e/1FAIpQLSd9ACrRqGcnC8C0XEHLHNyTGGOlBwf7oMrwW7YixAjCWSlLfg/viewform?usp=pp_url'+
+        '&entry.518151516='+encodeURIComponent(sn)+
+        '&entry.864654596='+encodeURIComponent(SESSION)+
+        '&entry.258952242='+encodeURIComponent(scores.l+'/3')+
+        '&entry.859150584='+encodeURIComponent(scores.v+'/6')+
+        '&entry.939912807='+encodeURIComponent(writingText)+
+        '&entry.1121796741='+encodeURIComponent(scores.w+'/20')+
+        '&entry.2086302086='+encodeURIComponent(transcriptText)+
+        '&entry.1435469716='+encodeURIComponent(scores.s+'/20')+
+        '&entry.1998281944='+encodeURIComponent(scores.g+'/8')+
+        '&entry.1207114914='+encodeURIComponent(pct+'%')+
+        '&entry.73595410='+encodeURIComponent(cefrResult);
+    
+    document.getElementById('notSubmittedWarning').style.display='none';
+    document.getElementById('submittedSuccess').style.display='block';
+    document.getElementById('submitBtn').style.display='none';
+    window.open(url,'_blank');
+}
+</script>
+</body>
+</html>
